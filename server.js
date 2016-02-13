@@ -11,13 +11,13 @@ app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
 });
 
-var clients = [],
-    sequence = 1;
+//Holds active sockets and usernames
+var connectedUsers = [],
+    connectedUserNames = [];
 
 io.on('connection', function(socket){
-    clients.push(socket);
+
     console.log(socket.id);
-    socket.emit('news', { hello: 'world' });
     //io.to(socket.id).emit('hey');
     //io.sockets.connected[socket.id].emit('particular User', {data: "Event response by particular user "});
 
@@ -29,10 +29,43 @@ io.on('connection', function(socket){
         //console.log(msg);
         io.emit('chat message', msg);
     });
+
+    socket.on('private message', function(msg){
+        //send to receiving user
+        console.log(connectedUserNames);
+        for(var i = 0; i < connectedUserNames.length; i++) {
+            if(connectedUserNames[i].name == msg.receive) {
+                connectedUsers[i].emit('private message', msg);
+            }
+        }
+        //var i = connectedUserNames.indexOf(msg.receive);
+        //connectedUsers[i].emit('private message', msg);
+
+        //send to sending user
+        //i = connectedUserNames.indexOf(msg.name);
+        //connectedUsers[i].emit('private message', msg);
+    });
+
     socket.on('New User', function(msg){
-        //socket.emit('New Connection', msg);
         console.log(msg);
-        io.emit('New Connection', msg);
+        connectedUserNames.push(msg);
+        connectedUsers.push(socket);
+        //connectedUsers[msg] = socket;
+        io.emit('activeUsers', connectedUserNames);
+    });
+
+    socket.on('disconnect', function() {
+
+        for(var i = 0; i < connectedUsers.length; i++) {
+            if(connectedUsers[i] == socket) {
+                connectedUsers.splice(i,1);
+                connectedUserNames.splice(i,1);
+            }
+        }
+
+        io.emit('activeUsers', connectedUserNames);
+
+        console.log('Got disconnect!');
     });
 });
 

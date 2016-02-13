@@ -1,6 +1,10 @@
 body {
-    background: #333 none repeat scroll 0 0;
+    background: #eee none repeat scroll 0 0;
     font-family: "Open Sans",sans-serif;
+    margin-top: 65px;
+}
+input {
+    outline: none;
 }
 .ng-enter {
     transition: all ease 0.5s;
@@ -34,18 +38,30 @@ body {
     top: 0;
     width: 100%;
     z-index: 1100;
+    transition: all ease 1s;
+    -webkit-transition: all ease 1s;
+    opacity: 1;
+}
+#newUser.ng-hide {
+    opacity: 0;
+}
+#newUser .logo {
+    transform: translateY(0) scale(1) rotate(0deg);
+    -webkit-transform: translateY(0) scale(1) rotate(0deg);
+    transition: all ease 2s;
+    -webkit-transition: all ease 2s;
+    opacity: 1;
+}
+#newUser.ng-hide .logo {
+    opacity: 0;
+    transform: translateY(-200px) scale(3) rotate(180deg);
+    -webkit-transform: translateY(-200px) scale(3) rotate(180deg);
 }
 #newUser .logo {
     margin-bottom: 20px;
 }
 #newUserFormWrap {
-    bottom: 0;
-    height: 345px;
-    left: 0;
-    margin: auto;
-    position: absolute;
-    right: 0;
-    top: 0;
+    margin: 50px auto 0;
     width: 500px;
 }
 #newUserFormWrap input {
@@ -77,13 +93,12 @@ nav h1 {
     bottom: 0;
     height: 110px;
     padding: 20px 0;
-    position: fixed;
-    width: 100%;
 }
-#chatWindow {
+.chatWindow {
     background: #fff none repeat scroll 0 0;
-    height: 800px;
-    border-radius: 10px;
+    height: 61vh;
+    overflow-y: scroll;
+    padding: 20px;
 }
 #chatSendMessage button, #chatSendMessage button:hover {
     background: #48bee5 none repeat scroll 0 0;
@@ -99,13 +114,6 @@ nav h1 {
     outline: medium none;
     resize: none;
 }
-.chatWindow {
-    background: #fff none repeat scroll 0 0;
-    height: 66vh;
-    margin-top: 100px;
-    padding: 20px;
-    overflow-y: scroll;
-}
 .currentUserText {
     color: #48bee5;
 }
@@ -120,4 +128,160 @@ nav h1 {
 }
 .chatWindow div {
     font-size: 25px;
+}
+#sideBar {
+    background: #333 none repeat scroll 0 0;
+    height: 100%;
+    position: fixed;
+    top: 60px;
+    width: 220px;
+    z-index: 1;
+}
+#contain {
+    padding-left: 220px;
+    width: 100%;
+}
+#sideBar ul li {
+    color: #fff;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 10px 20px;
+}
+#sideBar ul {
+    list-style: outside none none;
+    padding: 0;
+}
+#sideBar h2 {
+    color: #fff;
+    padding: 20px;
+    font-weight: 900;
+    font-size: 25px;
+    cursor: pointer;
+}
+#sideBar h2.active, #sideBar ul li.active {
+    background: #444;
+}
+#chooseIcons h2 {
+    color: #48bee5;
+    font-size: 40px;
+    font-weight: 900;
+}
+#chooseIcons .fa {
+    border-radius: 10px;
+    font-size: 60px;
+    padding: 10px;
+    cursor: pointer;
+}
+#chooseIcons > div {
+    margin: 15px auto;
+    width: 235px;
+}
+#chooseIcons .fa:hover, #chooseIcons .fa.active {
+    background: #ddd none repeat scroll 0 0;
+}
+.unRead {
+    background: #fff none repeat scroll 0 0;
+    border-radius: 50%;
+    color: #333;
+    font-size: 10px;
+    height: 30px;
+    padding: 8px 0;
+    position: absolute;
+    right: 20px;
+    text-align: center;
+    width: 30px;
+}
+.unRead.changed {
+    -webkit-animation: bounce 1000ms linear both;
+    animation: bounce 1000ms linear both;
+}
+
+
+@keyframes bounce {
+    0% {
+        transform: translateY(-100%);
+    }
+    5% {
+        transform: translateY(-100%);
+    }
+    15% {
+        transform: translateY(0px);
+    }
+    30% {
+        transform: translateY(-50%);
+    }
+    40% {
+        transform: translateY(0%);
+    }
+    50% {
+        transform: translateY(-30%);
+    }
+    70% {
+        transform: translateY(0%);
+    }
+    80% {
+        transform: translateY(-15%);
+    }
+    90% {
+        transform: translateY(0%);
+    }
+    95% {
+        transform: translateY(-10%);
+    }
+    97% {
+        transform: translateY(0%);
+    }
+    99% {
+        transform: translateY(-5%);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+@-webkit-keyframes bounce {
+    0% {
+        -webkit-transform: translateY(-100%);
+    }
+    5% {
+        -webkit-transform: translateY(-100%);
+    }
+    15% {
+        -webkit-transform: translateY(0px);
+    }
+    30% {
+        -webkit-transform: translateY(-50%);
+    }
+    40% {
+        -webkit-transform: translateY(0%);
+    }
+    50% {
+        -webkit-transform: translateY(-30%);
+    }
+    70% {
+        -webkit-transform: translateY(0%);
+    }
+    80% {
+        -webkit-transform: translateY(-15%);
+    }
+    90% {
+        -webkit-transform: translateY(0%);
+    }
+    95% {
+        -webkit-transform: translateY(-10%);
+    }
+    97% {
+        -webkit-transform: translateY(0%);
+    }
+    99% {
+        -webkit-transform: translateY(-5%);
+    }
+    100% {
+        -webkit-transform: translateY(0px);
+    }
+}
+
+@media(max-width: 640px) {
+
 }
