@@ -363,12 +363,14 @@ Media Queries
     #chatSendMessage {
         bottom: 0;
         position: fixed;
+        margin-left: 0;
         width: 100%;
         left: 0;
     }
     .chatWindow {
         height: calc(100% - 255px);
         position: fixed;
+        margin-left: 15px;
         width: calc(100% - 30px);
     }
 }
