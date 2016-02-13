@@ -1,0 +1,94 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    background: #e9e9e9;
+}
+#newUser {
+    background: #e9e9e9 none repeat scroll 0 0;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1100;
+}
+#newUser .logo {
+    margin-bottom: 20px;
+}
+#newUserFormWrap {
+    bottom: 0;
+    height: 345px;
+    left: 0;
+    margin: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 500px;
+}
+#newUserFormWrap input {
+    border: medium none;
+    border-radius: 20px;
+    color: #444;
+    font-size: 25px;
+    padding: 23px;
+    width: 100%;
+}
+#newUserFormWrap h2 {
+    color: #48bee5;
+    font-size: 73px;
+    font-weight: 800;
+    text-align: center;
+    cursor: pointer;
+}
+nav {
+    background: #48bee5 none repeat scroll 0 0;
+}
+nav h1 {
+    color: #fff;
+    font-weight: 800;
+    margin: 12px 0;
+}
+#chatSendMessage {
+    background: #cdcdcd none repeat scroll 0 0;
+    bottom: 0;
+    height: 110px;
+    padding: 20px 0;
+    position: fixed;
+    width: 100%;
+}
+#chatWindow {
+    background: #fff none repeat scroll 0 0;
+    height: 800px;
+}
+#chatSendMessage button, #chatSendMessage button:hover {
+    background: #48bee5 none repeat scroll 0 0;
+    border: medium none;
+    color: #fff;
+    font-size: 34px;
+    font-weight: bolder;
+    padding: 12px 40px;
+}
+#messageType:focus, #messageType {
+    border: medium none;
+    box-shadow: none;
+    outline: medium none;
+    resize: none;
+}
+.chatWindow {
+    background: #fff none repeat scroll 0 0;
+    height: 66vh;
+    margin-top: 100px;
+    padding: 20px;
+    overflow-y: scroll;
+}
+.currentUserText {
+    color: #48bee5;
+}
+#nameError {
+    position: absolute;
+    top: -70px;
+    width: 100%;
+}
+#newUser .logo .fa {
+    font-size: 150px;
+    color: #48bee5;
+}

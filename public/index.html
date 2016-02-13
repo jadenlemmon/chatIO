@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html ng-app="chat">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Socket IO Chat</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,800,600' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body ng-controller="controller">
+
+<div id="newUser" ng-if="!chatStarted">
+    <div id="newUserFormWrap">
+        <div class="alert alert-danger" id="nameError" ng-if="nameError && yourName.length < 1">Please Enter a Name.</div>
+        <div class="logo text-center">
+            <i class="fa fa-comment"></i>
+        </div>
+        <form name="startChatForm" ng-submit="startChat(yourName)" novalidate>
+            <input type="text" name="yourName" ng-model="yourName" id="yourName" placeholder="Your Name"
+                   ng-required="true">
+            <h2 type="submit">Go</h2>
+        </form>
+    </div>
+</div>
+
+<nav class="navbar navbar-fixed-top">
+    <div class="container">
+        <h1><i class="fa fa-comment"></i> Chat</h1>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="col-md-8">
+        <div class="chatWindow">
+            <div ng-repeat="message in messages"
+                 ng-class="{'currentUserText': message.name == currentUser}">{{message.name}} : {{message.text}}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="chatWindow">
+            <div class="header">
+                <h2>Users</h2>
+            </div>
+            <div ng-repeat="user in connectedUsers">{{user}}</div>
+        </div>
+    </div>
+</div>
+
+<div id="chatSendMessage">
+    <div class="container">
+        <div class="col-sm-10 col-xs-8">
+            <textarea rows="3" id="messageType" class="form-control" ng-model="messageToSend" ng-enter="sendMessage()"></textarea>
+        </div>
+        <div class="col-sm-2 col-xs-4">
+            <button class="btn btn-default" ng-class="{'disabled': messageToSend.length < 1}" ng-click="sendMessage()">
+                Send</button>
+        </div>
+        <div id="messageType"></div>
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+<script src="js/controller.js"></script>
+</body>
+</html>
