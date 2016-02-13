@@ -1,3 +1,8 @@
+/**
+========
+General
+========
+**/
 body {
     background: #eee none repeat scroll 0 0;
     font-family: "Open Sans",sans-serif;
@@ -33,6 +38,16 @@ input {
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none !important;
 }
+#contain {
+    padding-left: 220px;
+    width: 100%;
+}
+
+/**
+========
+Splash
+========
+**/
 #newUser {
     background: #e9e9e9 none repeat scroll 0 0;
     height: 100%;
@@ -44,6 +59,7 @@ input {
     transition: all ease 1s;
     -webkit-transition: all ease 1s;
     opacity: 1;
+    overflow: scroll;
 }
 #newUser.ng-hide {
     opacity: 0;
@@ -83,43 +99,6 @@ input {
     cursor: pointer;
     background: transparent;
 }
-nav {
-    background: #48bee5 none repeat scroll 0 0;
-}
-nav h1 {
-    color: #fff;
-    font-weight: 800;
-    margin: 12px 0;
-}
-#chatSendMessage {
-    background: #cdcdcd none repeat scroll 0 0;
-    bottom: 0;
-    height: 110px;
-    padding: 20px 0;
-}
-.chatWindow {
-    background: #fff none repeat scroll 0 0;
-    height: 61vh;
-    overflow-y: scroll;
-    padding: 20px;
-}
-#chatSendMessage button, #chatSendMessage button:hover {
-    background: #48bee5 none repeat scroll 0 0;
-    border: medium none;
-    color: #fff;
-    font-size: 34px;
-    font-weight: bolder;
-    padding: 12px 40px;
-}
-#messageType:focus, #messageType {
-    border: medium none;
-    box-shadow: none;
-    outline: medium none;
-    resize: none;
-}
-.currentUserText {
-    color: #48bee5;
-}
 #nameError {
     position: absolute;
     top: -70px;
@@ -129,9 +108,98 @@ nav h1 {
     font-size: 150px;
     color: #48bee5;
 }
+#chooseIcons h2 {
+    color: #48bee5;
+    font-size: 40px;
+    font-weight: 900;
+}
+#chooseIcons .fa {
+    border-radius: 10px;
+    font-size: 60px;
+    padding: 10px;
+    cursor: pointer;
+}
+#chooseIcons > div {
+    margin: 15px auto;
+    width: 235px;
+}
+#chooseIcons .fa:hover, #chooseIcons .fa.active {
+    background: #ddd none repeat scroll 0 0;
+}
+
+/**
+========
+Nav
+========
+**/
+nav {
+    background: #48bee5 none repeat scroll 0 0;
+}
+nav h1 {
+    color: #fff;
+    font-weight: 800;
+    margin: 12px 0;
+}
+.currentUserText {
+    color: #48bee5;
+}
+#mobileNav .fa {
+    font-size: 40px;
+    color: #fff;
+    margin: 12px 10px 0 0;
+    cursor: pointer;
+}
+
+
+/**
+========
+Chat Window
+========
+**/
+#chatSendMessage {
+    background: #cdcdcd none repeat scroll 0 0;
+    bottom: 0;
+    height: 110px;
+    padding: 20px 0;
+    position: fixed;
+    width: calc(100% - 250px);
+    left: 0;
+    margin-left: 235px;
+}
+.chatWindow {
+    background: #fff none repeat scroll 0 0;
+    height: calc(100% - 250px);
+    overflow-y: scroll;
+    padding: 20px;
+    position: fixed;
+    width: calc(100% - 250px);
+    left: 0;
+    margin-left: 235px;
+}
+#chatSendMessage button, #chatSendMessage button:hover {
+    background: #48bee5 none repeat scroll 0 0;
+    border: medium none;
+    color: #fff;
+    font-size: 34px;
+    font-weight: bolder;
+    padding: 12px 40px;
+    width: 100%;
+}
+#messageType:focus, #messageType {
+    border: medium none;
+    box-shadow: none;
+    outline: medium none;
+    resize: none;
+}
 .chatWindow div {
     font-size: 25px;
 }
+
+/**
+========
+Sidebar
+========
+**/
 #sideBar {
     background: #333 none repeat scroll 0 0;
     height: 100%;
@@ -139,10 +207,6 @@ nav h1 {
     top: 60px;
     width: 220px;
     z-index: 1;
-}
-#contain {
-    padding-left: 220px;
-    width: 100%;
 }
 #sideBar ul li {
     color: #fff;
@@ -165,23 +229,10 @@ nav h1 {
 #sideBar h2.active, #sideBar ul li.active {
     background: #444;
 }
-#chooseIcons h2 {
-    color: #48bee5;
-    font-size: 40px;
-    font-weight: 900;
-}
-#chooseIcons .fa {
-    border-radius: 10px;
-    font-size: 60px;
-    padding: 10px;
-    cursor: pointer;
-}
-#chooseIcons > div {
-    margin: 15px auto;
-    width: 235px;
-}
-#chooseIcons .fa:hover, #chooseIcons .fa.active {
-    background: #ddd none repeat scroll 0 0;
+#sideBar h3 {
+    color: #fff;
+    padding: 0 20px;
+    font-size: 22px;
 }
 .unRead {
     background: #fff none repeat scroll 0 0;
@@ -199,14 +250,12 @@ nav h1 {
     -webkit-animation: bounce 1000ms linear both;
     animation: bounce 1000ms linear both;
 }
-#mobileNav .fa {
-    font-size: 40px;
-    color: #fff;
-    margin: 12px 10px 0 0;
-    cursor: pointer;
-}
 
-
+/**
+========
+Animations
+========
+**/
 @keyframes bounce {
     0% {
         transform: translateY(-100%);
@@ -291,6 +340,11 @@ nav h1 {
     }
 }
 
+/**
+========
+Media Queries
+========
+**/
 @media(max-width: 640px) {
     #sideBar {
         left: -220px;
@@ -305,5 +359,16 @@ nav h1 {
     #newUserFormWrap {
         margin: 20px;
         width: auto;
+    }
+    #chatSendMessage {
+        bottom: 0;
+        position: fixed;
+        width: 100%;
+        left: 0;
+    }
+    .chatWindow {
+        height: calc(100% - 255px);
+        position: fixed;
+        width: calc(100% - 30px);
     }
 }

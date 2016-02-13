@@ -54,7 +54,7 @@
     <h2 ng-class="{'active': activeChatWindow == 'Main Lobby'}" ng-click="chatWindow('Main Lobby',false)">Main
         Lobby</h2>
     <div class="header">
-        <h2>Active Users</h2>
+        <h3>Active Users</h3>
     </div>
     <ul>
         <li ng-repeat="user in connectedUsers" ng-class="{'active': user.name == activeChatWindow}"
@@ -67,7 +67,7 @@
 <div id="contain">
     <div class="container-fluid">
         <div class="">
-            <h2><span ng-show="pm">PM: </span>{{activeChatWindow}}</h2>
+            <h2><span ng-show="pm">Private Message: </span>{{activeChatWindow}}</h2>
             <div class="chatWindow" scroll-glue>
                 <div ng-repeat="message in messages[activeChatWindow]"
                      ng-class="{'currentUserText': message.name == currentUser}">{{message.name}} : {{message.text}}</div>

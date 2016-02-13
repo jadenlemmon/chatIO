@@ -5,16 +5,16 @@ chat.controller('controller', function($scope,$window) {
     //Handle resize for layout changes
     var w = angular.element($window);
     w.bind('resize', function () {
-        $scope.windowSize = window.innerWidth;
-        $scope.isMobile = window.innerWidth < 961;
+        $scope.windowSize = screen.width;
+        $scope.isMobile = screen.width < 640;
         $scope.$apply();
     });
 
     //Current window size
-    $scope.windowSize = window.innerWidth;
+    $scope.windowSize = screen.width;
 
     //Are we on mobile sizing?
-    $scope.isMobile = window.innerWidth < 640;
+    $scope.isMobile = screen.width < 640;
 
     $scope.activeIcon = 'rocket';
     $scope.chatStarted = false;
