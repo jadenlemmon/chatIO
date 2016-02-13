@@ -1,6 +1,20 @@
 var chat = angular.module('chat', ['ngAnimate','luegg.directives']);
 
-chat.controller('controller', function($scope) {
+chat.controller('controller', function($scope,$window) {
+
+    //Handle resize for layout changes
+    var w = angular.element($window);
+    w.bind('resize', function () {
+        $scope.windowSize = window.innerWidth;
+        $scope.isMobile = window.innerWidth < 961;
+        $scope.$apply();
+    });
+
+    //Current window size
+    $scope.windowSize = window.innerWidth;
+
+    //Are we on mobile sizing?
+    $scope.isMobile = window.innerWidth < 640;
 
     $scope.activeIcon = 'rocket';
     $scope.chatStarted = false;
@@ -11,11 +25,16 @@ chat.controller('controller', function($scope) {
     $scope.connectedUsers = [];
     $scope.activeChatWindow = 'Main Lobby';
     $scope.pm = false;
+    $scope.toggleMobile = false;
 
     var socket = io();
 
     $scope.messages = {
         'Main Lobby': []
+    };
+
+    $scope.toggleMobileNav = function() {
+        $scope.toggleMobile = $scope.toggleMobile ? false : true;
     };
 
     $scope.setActiveIcon = function(icon) {
@@ -76,6 +95,7 @@ chat.controller('controller', function($scope) {
                 }
             }
         }
+        $scope.toggleMobileNav();
     };
 
     socket.on('chat message', function(msg){

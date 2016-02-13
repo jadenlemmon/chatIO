@@ -3,6 +3,9 @@ body {
     font-family: "Open Sans",sans-serif;
     margin-top: 65px;
 }
+* {
+    -webkit-overflow-scrolling: touch;
+}
 input {
     outline: none;
 }
@@ -196,6 +199,12 @@ nav h1 {
     -webkit-animation: bounce 1000ms linear both;
     animation: bounce 1000ms linear both;
 }
+#mobileNav .fa {
+    font-size: 40px;
+    color: #fff;
+    margin: 12px 10px 0 0;
+    cursor: pointer;
+}
 
 
 @keyframes bounce {
@@ -283,5 +292,18 @@ nav h1 {
 }
 
 @media(max-width: 640px) {
-
+    #sideBar {
+        left: -220px;
+        overflow: hidden;
+    }
+    #sideBar.show {
+        left: 0;
+    }
+    #contain {
+        padding-left: 0;
+    }
+    #newUserFormWrap {
+        margin: 20px;
+        width: auto;
+    }
 }

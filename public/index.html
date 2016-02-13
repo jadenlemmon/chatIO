@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="chat">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Socket IO Chat</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,800,600' rel='stylesheet' type='text/css'>
@@ -42,12 +42,15 @@
 
 <nav class="navbar navbar-fixed-top">
     <div class="container-fluid">
-        <h1 class="pull-left"><i class="fa fa-comment"></i> Chat</h1>
+        <div id="mobileNav" class="pull-left" ng-show="isMobile" ng-click="toggleMobileNav()">
+            <i class="fa fa-bars"></i>
+        </div>
+        <h1 class="pull-left" ng-show="!isMobile"><i class="fa fa-comment"></i> Chat</h1>
         <h1 class="pull-right"><i class="fa fa-{{activeIcon}}"></i> {{currentUser}}</h1>
     </div>
 </nav>
 
-<div id="sideBar">
+<div id="sideBar" ng-class="{'show': toggleMobile}">
     <h2 ng-class="{'active': activeChatWindow == 'Main Lobby'}" ng-click="chatWindow('Main Lobby',false)">Main
         Lobby</h2>
     <div class="header">
