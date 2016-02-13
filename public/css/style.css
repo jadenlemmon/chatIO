@@ -1,6 +1,30 @@
 body {
-    font-family: 'Open Sans', sans-serif;
-    background: #e9e9e9;
+    background: #333 none repeat scroll 0 0;
+    font-family: "Open Sans",sans-serif;
+}
+.ng-enter {
+    transition: all ease 0.5s;
+    opacity:0;
+}
+.ng-enter.ng-enter-active {
+    opacity: 1;
+}
+.ng-leave {
+    transition: all ease 0.5s;
+    opacity:1;
+}
+.ng-leave.ng-leave-active {
+    opacity:0;
+}
+* {
+    transition: all ease 0.5s;
+    opacity: 1;
+}
+*.ng-hide {
+    opacity: 0;
+}
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
 }
 #newUser {
     background: #e9e9e9 none repeat scroll 0 0;
@@ -32,12 +56,13 @@ body {
     padding: 23px;
     width: 100%;
 }
-#newUserFormWrap h2 {
+#newUserFormWrap input[type='submit'] {
     color: #48bee5;
     font-size: 73px;
     font-weight: 800;
     text-align: center;
     cursor: pointer;
+    background: transparent;
 }
 nav {
     background: #48bee5 none repeat scroll 0 0;
@@ -58,6 +83,7 @@ nav h1 {
 #chatWindow {
     background: #fff none repeat scroll 0 0;
     height: 800px;
+    border-radius: 10px;
 }
 #chatSendMessage button, #chatSendMessage button:hover {
     background: #48bee5 none repeat scroll 0 0;
@@ -91,4 +117,7 @@ nav h1 {
 #newUser .logo .fa {
     font-size: 150px;
     color: #48bee5;
+}
+.chatWindow div {
+    font-size: 25px;
 }

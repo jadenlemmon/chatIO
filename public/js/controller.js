@@ -1,4 +1,4 @@
-var chat = angular.module('chat', []);
+var chat = angular.module('chat', ['ngAnimate']);
 
 chat.controller('controller', function($scope) {
 
@@ -46,7 +46,9 @@ chat.controller('controller', function($scope) {
         //localStorage.setItem('messages', JSON.stringify($scope.messages));
     });
     socket.on('New Connection', function(msg) {
+        console.log(msg);
         $scope.connectedUsers.push(msg);
+        $scope.$apply();
     });
 
     //socket.on('connect', function () { // TIP: you can avoid listening on `connect` and listen on events directly too!

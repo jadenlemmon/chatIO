@@ -7,9 +7,13 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,800,600' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.js"></script>
+    <script src="js/controller.js"></script>
 </head>
 
-<body ng-controller="controller">
+<body ng-controller="controller" class="ng-cloak">
 
 <div id="newUser" ng-if="!chatStarted">
     <div id="newUserFormWrap">
@@ -20,7 +24,7 @@
         <form name="startChatForm" ng-submit="startChat(yourName)" novalidate>
             <input type="text" name="yourName" ng-model="yourName" id="yourName" placeholder="Your Name"
                    ng-required="true">
-            <h2 type="submit">Go</h2>
+            <input type="submit" value="Go">
         </form>
     </div>
 </div>
@@ -60,9 +64,5 @@
         <div id="messageType"></div>
     </div>
 </div>
-
-<script src="/socket.io/socket.io.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
-<script src="js/controller.js"></script>
 </body>
 </html>
