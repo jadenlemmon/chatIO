@@ -10,6 +10,13 @@ chat.controller('controller', function($scope,$window) {
         $scope.$apply();
     });
 
+    function playAudio() {
+        if (focused === false) {
+            var audio = new Audio('../sounds/Sparkle Pop Bonus.wav');
+            audio.play();
+        }
+    }
+
     //Current window size
     $scope.windowSize = screen.width;
 
@@ -104,6 +111,8 @@ chat.controller('controller', function($scope,$window) {
             text: msg.text
         });
         $scope.$apply();
+
+        playAudio();
     });
 
     socket.on('private message', function(msg){
@@ -123,6 +132,8 @@ chat.controller('controller', function($scope,$window) {
             }
         }
         $scope.$apply();
+
+        playAudio();
     });
 
     socket.on('activeUsers', function(msg) {
@@ -131,19 +142,21 @@ chat.controller('controller', function($scope,$window) {
     });
 
     socket.on('userJoined', function(msg) {
-        $scope.messages['Main Lobby'].push({
-            name: 'User Joined',
-            text: msg
-        });
-        $scope.$apply();
+        if($scope.currentUser) {
+            $scope.messages['Main Lobby'].push({
+                name: 'User Joined',
+                text: msg
+            });
+        }
     });
 
     socket.on('userLeft', function(msg) {
-        $scope.messages['Main Lobby'].push({
-            name: 'User Left',
-            text: msg
-        });
-        $scope.$apply();
+        if($scope.currentUser) {
+            $scope.messages['Main Lobby'].push({
+                name: 'User Left',
+                text: msg
+            });
+        }
     });
 
 }).directive('ngEnter', function() {
@@ -169,3 +182,9 @@ chat.controller('controller', function($scope,$window) {
         });
     };
 });
+
+var focused = true;
+
+window.onfocus = window.onblur = function(e) {
+    focused = (e || event).type === "focus";
+}
