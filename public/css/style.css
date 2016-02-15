@@ -92,7 +92,7 @@ Splash
     width: 100%;
 }
 #newUserFormWrap input[type='submit'] {
-    color: #48bee5;
+    color: #FF6F69;
     font-size: 73px;
     font-weight: 800;
     text-align: center;
@@ -106,10 +106,10 @@ Splash
 }
 #newUser .logo .fa {
     font-size: 150px;
-    color: #48bee5;
+    color: #FF6F69;
 }
 #chooseIcons h2 {
-    color: #48bee5;
+    color: #FF6F69;
     font-size: 40px;
     font-weight: 900;
 }
@@ -132,8 +132,9 @@ Splash
 Nav
 ========
 **/
-nav {
-    background: #48bee5 none repeat scroll 0 0;
+nav.navbar-fixed-top {
+    background: #ff6f69 none repeat scroll 0 0;
+    border-bottom: 6px solid #E3635D;
 }
 nav h1 {
     color: #fff;
@@ -141,7 +142,7 @@ nav h1 {
     margin: 12px 0;
 }
 .currentUserText {
-    color: #48bee5;
+    color: #FF6F69;
 }
 #mobileNav .fa {
     font-size: 40px;
@@ -157,7 +158,6 @@ Chat Window
 ========
 **/
 #chatSendMessage {
-    background: #cdcdcd none repeat scroll 0 0;
     bottom: 0;
     height: 110px;
     padding: 20px 0;
@@ -177,8 +177,9 @@ Chat Window
     margin-left: 235px;
 }
 #chatSendMessage button, #chatSendMessage button:hover {
-    background: #48bee5 none repeat scroll 0 0;
+    background: #96ceb4 none repeat scroll 0 0;
     border: medium none;
+    box-shadow: 0 -5px 0 #88baa3 inset;
     color: #fff;
     font-size: 34px;
     font-weight: bolder;

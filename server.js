@@ -3,7 +3,6 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var assert = require('assert');
-//var path = require('path');
 
 app.use(express.static(__dirname + '/public'));
 
@@ -17,16 +16,7 @@ var connectedUsers = [],
 
 io.on('connection', function(socket){
 
-    console.log(socket.id);
-    //io.to(socket.id).emit('hey');
-    //io.sockets.connected[socket.id].emit('particular User', {data: "Event response by particular user "});
-
-    //console.log(socket);
-    //io.emit('connection', 'new connection');
-    console.log('new connection');
-
     socket.on('chat message', function(msg){
-        //console.log(msg);
         io.emit('chat message', msg);
     });
 
@@ -38,19 +28,12 @@ io.on('connection', function(socket){
                 connectedUsers[i].emit('private message', msg);
             }
         }
-        //var i = connectedUserNames.indexOf(msg.receive);
-        //connectedUsers[i].emit('private message', msg);
-
-        //send to sending user
-        //i = connectedUserNames.indexOf(msg.name);
-        //connectedUsers[i].emit('private message', msg);
     });
 
     socket.on('New User', function(msg){
         console.log(msg);
         connectedUserNames.push(msg);
         connectedUsers.push(socket);
-        //connectedUsers[msg] = socket;
         io.emit('activeUsers', connectedUserNames);
     });
 
@@ -68,15 +51,6 @@ io.on('connection', function(socket){
         console.log('Got disconnect!');
     });
 });
-
-// Every 1 second, sends a message to a random client:
-//setInterval(function() {
-//    var randomClient;
-//    if (clients.length > 0) {
-//        randomClient = Math.floor(Math.random() * clients.length);
-//        clients[randomClient].emit('foo', sequence++);
-//    }
-//}, 1000);
 
 http.listen(3000, function(){
     console.log('listening on *:3000');
