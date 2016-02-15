@@ -34,6 +34,7 @@ io.on('connection', function(socket){
         console.log(msg);
         connectedUserNames.push(msg);
         connectedUsers.push(socket);
+        io.emit('userJoined', msg.name);
         io.emit('activeUsers', connectedUserNames);
     });
 
@@ -41,6 +42,7 @@ io.on('connection', function(socket){
 
         for(var i = 0; i < connectedUsers.length; i++) {
             if(connectedUsers[i] == socket) {
+                io.emit('userLeft', connectedUserNames[i].name);
                 connectedUsers.splice(i,1);
                 connectedUserNames.splice(i,1);
             }

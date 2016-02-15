@@ -130,6 +130,22 @@ chat.controller('controller', function($scope,$window) {
         $scope.$apply();
     });
 
+    socket.on('userJoined', function(msg) {
+        $scope.messages['Main Lobby'].push({
+            name: 'User Joined',
+            text: msg
+        });
+        $scope.$apply();
+    });
+
+    socket.on('userLeft', function(msg) {
+        $scope.messages['Main Lobby'].push({
+            name: 'User Left',
+            text: msg
+        });
+        $scope.$apply();
+    });
+
 }).directive('ngEnter', function() {
     return function(scope, element, attrs) {
         element.bind("keydown keypress", function(event) {
