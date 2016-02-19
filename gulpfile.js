@@ -12,7 +12,8 @@ gulp.task('default', function() {
 gulp.task('commit', function () {
     return gulp.src('.')
         .pipe(git.add())
-        .pipe(git.commit('testing gulp commit'));
+        .pipe(git.commit('gulp commit'))
+        .pipe(git.push('origin', 'master'));
 });
 
 gulp.task('sass', function () {
