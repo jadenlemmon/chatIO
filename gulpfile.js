@@ -12,8 +12,8 @@ gulp.task('default', function() {
 gulp.task('commit', function () {
     return gulp.src('.')
         .pipe(git.add())
-        .pipe(git.commit('gulp commit'))
-        .pipe(git.push('origin', 'master'));
+        .pipe(git.commit('gulp commit'));
+        //.pipe(git.push('origin', 'master'));
 });
 
 gulp.task('sass', function () {
@@ -24,4 +24,15 @@ gulp.task('sass', function () {
 
 gulp.task('sass:watch', function () {
     gulp.watch('./scss/**/*.scss', ['sass']);
+});
+
+// watch files for changes and reload
+gulp.task('serve', function() {
+    browserSync({
+        server: {
+            baseDir: 'public'
+        }
+    });
+
+    gulp.watch(['*.html', 'styles/**/*.css', 'scripts/**/*.js'], {cwd: 'public'}, reload);
 });
