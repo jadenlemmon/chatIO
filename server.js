@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var assert = require('assert');
+var mongo = require('./db.js');
 
 app.use(express.static(__dirname + '/public'));
 
@@ -18,6 +18,7 @@ io.on('connection', function(socket){
 
     socket.on('chat message', function(msg){
         io.emit('chat message', msg);
+        mongo.insert(msg);
     });
 
     socket.on('private message', function(msg){
@@ -34,12 +35,18 @@ io.on('connection', function(socket){
         console.log(msg);
         connectedUserNames.push(msg);
         connectedUsers.push(socket);
-        io.emit('userJoined', msg.name);
+        mongo.getChats(function(data) {
+            socket.emit('chats',data);
+            io.emit('userJoined', msg.name);
+        });
         io.emit('activeUsers', connectedUserNames);
     });
 
-    socket.on('disconnect', function() {
+    socket.on('kill', function(){
+        socket.disconnect();
+    });
 
+    socket.on('disconnect', function() {
         for(var i = 0; i < connectedUsers.length; i++) {
             if(connectedUsers[i] == socket) {
                 io.emit('userLeft', connectedUserNames[i].name);

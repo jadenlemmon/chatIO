@@ -11,6 +11,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
     <script src="https://cdn.rawgit.com/Luegg/angularjs-scroll-glue/master/src/scrollglue.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-cookies.js"></script>
     <script src="js/controller.js"></script>
 </head>
 
@@ -46,6 +47,7 @@
             <i class="fa fa-bars"></i>
         </div>
         <h1 class="pull-left" ng-show="!isMobile"><i class="fa fa-comment"></i> Chat</h1>
+        <div class="pull-right"><button class="btn btn-default" ng-click="leaveChat()">Leave Chat</button></div>
         <h1 class="pull-right"><i class="fa fa-{{activeIcon}}"></i> {{currentUser}}</h1>
     </div>
 </nav>

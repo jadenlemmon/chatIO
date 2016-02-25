@@ -149,6 +149,16 @@ Nav
 nav.navbar-fixed-top {
   background: #ff6f69 none repeat scroll 0 0;
   border-bottom: 6px solid #E3635D;
+
+  .btn {
+    background: #e3635d none repeat scroll 0 0;
+    border: medium none;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 8px 0 0 15px;
+    padding: 10px 20px;
+  }
 }
 nav h1 {
   color: #fff;
