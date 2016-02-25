@@ -47,12 +47,12 @@
             <i class="fa fa-bars"></i>
         </div>
         <h1 class="pull-left" ng-show="!isMobile"><i class="fa fa-comment"></i> Chat</h1>
-        <div class="pull-right"><button class="btn btn-default" ng-click="leaveChat()">Leave Chat</button></div>
         <h1 class="pull-right"><i class="fa fa-{{activeIcon}}"></i> {{currentUser}}</h1>
     </div>
 </nav>
 
 <div id="sideBar" ng-class="{'show': toggleMobile}">
+    <button class="btn btn-default" ng-click="leaveChat()">Leave Chat</button>
     <h2 ng-class="{'active': activeChatWindow == 'Main Lobby'}" ng-click="chatWindow('Main Lobby',false)">Main
         Lobby</h2>
     <div class="header">
