@@ -46,6 +46,11 @@ io.on('connection', function(socket){
         socket.disconnect();
     });
 
+    socket.on('upload', function(file){
+        console.log(file);
+        console.log('upload stuff');
+    });
+
     socket.on('disconnect', function() {
         for(var i = 0; i < connectedUsers.length; i++) {
             if(connectedUsers[i] == socket) {

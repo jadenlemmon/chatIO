@@ -190,6 +190,15 @@ Chat Window
     padding: 12px 40px;
     width: 100%;
   }
+
+  #imgPreview {
+    position: absolute;
+    height: 70px;
+
+    img {
+      max-height: 100%;
+    }
+  }
 }
 .chatWindow {
   background: #fff none repeat scroll 0 0;
@@ -204,6 +213,9 @@ Chat Window
   div {
     font-size: 25px;
   }
+}
+.chatWindow.dragover {
+  box-shadow: 0 0 5px 4px #96ceb4;
 }
 
 #messageType:focus, #messageType {
