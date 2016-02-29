@@ -82,7 +82,8 @@ chat.controller('controller', function($scope,$window,$cookies,Upload) {
         socket.on('chat message', function(msg){
             $scope.messages['Main Lobby'].push({
                 name: msg.name,
-                text: msg.text
+                text: msg.text,
+                img: msg.img
             });
             $scope.$apply();
 
@@ -178,28 +179,9 @@ chat.controller('controller', function($scope,$window,$cookies,Upload) {
 
     // upload on file select or drop
     $scope.uploadFile = function (file) {
-        var policy = '{"expiration": "2020-01-01T00:00:00Z","conditions": [{"bucket": "angular-file-upload"}["starts-with", "$key", ""],{"acl": "private"},["starts-with", "$Content-Type", ""],["starts-with", "$filename", ""],["content-length-range", 0, 524288000]]}';
-        console.log(file.name);
-        Upload.upload({
-            url: 'https://chatio.s3-us-west-2.amazonaws.com',
-            method: 'POST',
-            data: {
-                key: file.name, // the key to store the file on S3, could be file name or customized
-                AWSAccessKeyId: 'AKIAJXKJK62WS5WUQL7A',
-                acl: 'public-read', // sets the access to the uploaded file in the bucket: private, public-read, ...
-                policy: btoa(policy), // base64-encoded json policy (see article below)
-                signature: 'wVuk7P8GU5rBPxFq9ghhKRqZ6Qw=', // base64-encoded signature based on policy string (see article below)
-                "Content-Type": file.type != '' ? file.type : 'application/octet-stream', // content type of the file (NotEmpty)
-                //filename: file.name, // this is needed for Flash polyfill IE8-9
-                file: file
-            }
-        }).then(function (resp) {
-            console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
-        }, function (resp) {
-            console.log('Error status: ' + resp.status);
-        }, function (evt) {
-            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-            console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+        socket.emit('upload', {
+            file: file,
+            name: file.name
         });
     };
 

@@ -3,6 +3,14 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var mongo = require('./db.js');
+var AWS = require('aws-sdk');
+AWS.config.region = 'us-west-2';
+AWS.config.update({
+    accessKeyId: 'AKIAJXKJK62WS5WUQL7A',
+    secretAccessKey: '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'
+});
+
+var s3 = new AWS.S3();
 
 app.use(express.static(__dirname + '/public'));
 
@@ -47,8 +55,29 @@ io.on('connection', function(socket){
     });
 
     socket.on('upload', function(file){
-        console.log(file);
-        console.log('upload stuff');
+        var params = {
+            Bucket: 'chatio/uploads',
+            Key: file.name,
+            Body: file.file
+        };
+
+        s3.putObject(params, function (perr, pres) {
+            if (perr) {
+                console.log("Error uploading data: ", perr);
+            } else {
+                var params = {Bucket: 'chatio/uploads', Key: file.name};
+                s3.getSignedUrl('getObject', params, function (err, url) {
+                    console.log("The URL is", url);
+                    io.emit('chat message', {
+                        name: 'image',
+                        img: 'yes',
+                        text: url
+                    });
+                });
+                //mongo.insert(msg);
+                console.log("Successfully uploaded data to myBucket/myKey");
+            }
+        });
     });
 
     socket.on('disconnect', function() {
