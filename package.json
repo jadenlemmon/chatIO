@@ -3,8 +3,10 @@
   "version": "0.0.1",
   "description": "simple chat application",
   "dependencies": {
+    "aws-sdk": "^2.2.39",
     "express": "^4.10.2",
     "gulp-git": "^1.7.0",
+    "mongodb": "^2.1.7",
     "socket.io": "^1.4.5"
   },
   "devDependencies": {

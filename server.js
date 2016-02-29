@@ -57,25 +57,22 @@ io.on('connection', function(socket){
     socket.on('upload', function(file){
         var params = {
             Bucket: 'chatio/uploads',
-            Key: file.name,
-            Body: file.file
+            Key: file.fileName,
+            Body: file.file,
+            ACL: 'public-read'
         };
 
         s3.putObject(params, function (perr, pres) {
             if (perr) {
                 console.log("Error uploading data: ", perr);
             } else {
-                var params = {Bucket: 'chatio/uploads', Key: file.name};
-                s3.getSignedUrl('getObject', params, function (err, url) {
-                    console.log("The URL is", url);
-                    io.emit('chat message', {
-                        name: 'image',
-                        img: 'yes',
-                        text: url
-                    });
-                });
-                //mongo.insert(msg);
-                console.log("Successfully uploaded data to myBucket/myKey");
+                var msg = {
+                    name: file.name,
+                    img: 'yes',
+                    text: 'https://s3-us-west-2.amazonaws.com/chatio/uploads/'+file.fileName
+                };
+                io.emit('chat message', msg);
+                mongo.insert(msg);
             }
         });
     });

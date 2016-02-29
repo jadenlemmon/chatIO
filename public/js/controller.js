@@ -144,7 +144,8 @@ chat.controller('controller', function($scope,$window,$cookies,Upload) {
         if(queue == 'Main Lobby') {
             socket.emit('chat message', {
                 name: cUser,
-                text: message
+                text: message,
+                img: 'no'
             });
         }
         else {
@@ -179,9 +180,11 @@ chat.controller('controller', function($scope,$window,$cookies,Upload) {
 
     // upload on file select or drop
     $scope.uploadFile = function (file) {
+        var cUser = $scope.currentUser;
         socket.emit('upload', {
+            name: cUser,
             file: file,
-            name: file.name
+            fileName: file.name
         });
     };
 

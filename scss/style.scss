@@ -213,6 +213,10 @@ Chat Window
   div {
     font-size: 25px;
   }
+  img {
+    max-width: 400px;
+    width: 100%;
+  }
 }
 .chatWindow.dragover {
   box-shadow: 0 0 5px 4px #96ceb4;

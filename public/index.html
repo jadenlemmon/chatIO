@@ -73,16 +73,16 @@
             <h2><span ng-show="pm">Private Message: </span>{{activeChatWindow}}</h2>
             <div class="chatWindow" ng-model="imgPreview" ngf-drop="uploadFile($file)" scroll-glue>
                 <div ng-repeat="message in messages[activeChatWindow]"
-                     ng-class="{'currentUserText': message.name == currentUser}">{{message.name}} : {{message.text}}</div>
+                     ng-class="{'currentUserText': message.name == currentUser}">{{message.name}} : <span ng-if="message.img != 'yes'">{{message.text}}</span><img ng-src="{{message.text}}" ng-if="message.img == 'yes'"></div>
             </div>
         </div>
     </div>
     <div class="container-fluid">
         <div id="chatSendMessage">
             <div class="col-sm-8 col-xs-6">
-                <div id="imgPreview">
-                    <img ngf-src="imgPreview" class="img-responsive">
-                </div>
+                <!--<div id="imgPreview">-->
+                    <!--<img ngf-src="imgPreview" class="img-responsive">-->
+                <!--</div>-->
                 <textarea rows="3" id="messageType" class="form-control" ng-model="messageToSend" ng-enter="sendMessage()"></textarea>
             </div>
             <div class="col-sm-4 col-xs-6">
