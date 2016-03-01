@@ -73,6 +73,11 @@ chat.controller('controller', function($scope,$window,$cookies,Upload) {
             $scope.$apply();
         });
 
+        socket.on('privateChats', function(msg) {
+            $scope.messages[msg.lobby] = msg.data;
+            $scope.$apply();
+        });
+
         socket.on('userLeft', function(msg) {
             if($scope.currentUser) {
                 $scope.messages['Main Lobby'].push({
@@ -158,20 +163,23 @@ chat.controller('controller', function($scope,$window,$cookies,Upload) {
             socket.emit('chat message', {
                 name: cUser,
                 text: message,
-                img: 'no'
+                img: 'no',
+                type: 'public'
             });
         }
         else {
             socket.emit('private message', {
                 name: cUser,
                 text: message,
-                receive: queue
+                receive: queue,
+                type: 'private'
             });
         }
         $scope.messageToSend = '';
     };
 
     $scope.chatWindow = function(chat,type) {
+        var cUser = $scope.currentUser;
         $scope.pm = type;
         $scope.activeChatWindow = chat;
         if(type) {
@@ -180,9 +188,11 @@ chat.controller('controller', function($scope,$window,$cookies,Upload) {
                     $scope.connectedUsers[i].unRead = 0;
                 }
             }
-            //socket.emit('pastMessages', {
-            //    queue: chat
-            //});
+            //make a request for past messages
+            socket.emit('pastMessages', {
+                queue: chat,
+                cUser: cUser
+            });
         }
         $scope.toggleMobileNav();
     };
@@ -192,16 +202,16 @@ chat.controller('controller', function($scope,$window,$cookies,Upload) {
         $scope.imgUploading = true;
         var queue = $scope.activeChatWindow;
         var cUser = $scope.currentUser;
-        var privateUpload = true;
+        var type = 'private';
         if(queue == 'Main Lobby') {
-            privateUpload = false;
+            type = 'public';
         }
         socket.emit('upload', {
             name: cUser,
             file: file,
             fileName: file.name,
             receive: queue,
-            privateUpload: privateUpload
+            type: type
         });
     };
 

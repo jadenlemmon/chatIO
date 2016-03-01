@@ -21,17 +21,30 @@ var connectedUsers = [],
 
 io.on('connection', function(socket){
 
+    /**
+     * Receive public chat message
+     */
     socket.on('chat message', function(msg){
         io.emit('chat message', msg);
         mongo.insert(msg);
     });
 
-    //socket.on('pastMessages', function(msg){
-    //    mongo.getChats(function(data) {
-    //        socket.emit('chats',data);
-    //    });
-    //});
+    /**
+     * Request for private chat messages
+     */
+    socket.on('pastMessages', function(msg){
+        mongo.getPrivateChats(msg.queue,msg.cUser,function(data) {
+            console.log(data);
+            socket.emit('privateChats',{
+                lobby: msg.queue,
+                data: data
+            });
+        });
+    });
 
+    /**
+     * Receive private chat message
+     */
     socket.on('private message', function(msg){
         //send to receiving user
         console.log(connectedUserNames);
@@ -40,8 +53,12 @@ io.on('connection', function(socket){
                 connectedUsers[i].emit('private message', msg);
             }
         }
+        mongo.insert(msg);
     });
 
+    /**
+     * Receive request of a new user
+     */
     socket.on('New User', function(msg){
         console.log(msg);
         connectedUserNames.push(msg);
@@ -53,14 +70,22 @@ io.on('connection', function(socket){
         io.emit('activeUsers', connectedUserNames);
     });
 
+    /**
+     * Request to kill a session
+     */
     socket.on('kill', function(){
         socket.disconnect();
     });
 
+    /**
+     * Request to upload a file
+     */
     socket.on('upload', function(file){
+        var timestamp = Math.floor(new Date() / 1000);
+
         var params = {
             Bucket: 'chatio/uploads',
-            Key: file.fileName,
+            Key: timestamp+'_'+file.fileName,
             Body: file.file,
             ACL: 'public-read'
         };
@@ -72,10 +97,11 @@ io.on('connection', function(socket){
                 var msg = {
                     name: file.name,
                     img: 'yes',
-                    text: 'https://s3-us-west-2.amazonaws.com/chatio/uploads/'+file.fileName,
-                    receive: file.receive
+                    text: 'https://s3-us-west-2.amazonaws.com/chatio/uploads/'+timestamp+'_'+file.fileName,
+                    receive: file.receive,
+                    type: file.type
                 };
-                if(!file.privateUpload) {
+                if(file.type == 'public') {
                     io.emit('chat message', msg);
                 }
                 else {
@@ -90,6 +116,9 @@ io.on('connection', function(socket){
         });
     });
 
+    /**
+     * Run on socket disconnect
+     */
     socket.on('disconnect', function() {
         for(var i = 0; i < connectedUsers.length; i++) {
             if(connectedUsers[i] == socket) {

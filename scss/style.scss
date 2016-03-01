@@ -243,6 +243,9 @@ Chat Window
     max-width: 400px;
     width: 100%;
   }
+  a.small {
+    font-size: 12px;
+  }
 }
 .chatWindow.dragover {
   box-shadow: 0 0 5px 4px $green;

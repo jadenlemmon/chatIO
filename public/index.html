@@ -77,7 +77,10 @@
             </div>
             <div class="chatWindow" ng-model="imgPreview" ngf-drop="uploadFile($file)" scroll-glue>
                 <div ng-repeat="message in messages[activeChatWindow]"
-                     ng-class="{'currentUserText': message.name == currentUser}">{{message.name}} : <span ng-if="message.img != 'yes'">{{message.text}}</span><img ng-src="{{message.text}}" ng-if="message.img == 'yes'"></div>
+                     ng-class="{'currentUserText': message.name == currentUser}">{{message.name}} : <span ng-if="message.img !== 'yes'">{{message.text}}</span><span ng-if="message.img == 'yes'"><a href="{{message.text}}" target="_blank" class="small">{{message.text}}</a></span>
+                    <div ng-if="message.img == 'yes'">
+                        <img ng-src="{{message.text}}"></div>
+                    </div>
             </div>
         </div>
     </div>
