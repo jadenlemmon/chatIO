@@ -1,6 +1,8 @@
+var socket;
+
 var chat = angular.module('chat', ['ngAnimate','luegg.directives', 'ngCookies', 'ngFileUpload']);
 
-chat.controller('controller', function($scope,$window,$cookies,Upload) {
+chat.controller('mainController', function($scope,$window,$cookies,Upload) {
 
     //Handle resize for layout changes
     var w = angular.element($window);
@@ -16,8 +18,6 @@ chat.controller('controller', function($scope,$window,$cookies,Upload) {
             audio.play();
         }
     }
-
-    var socket;
 
     //Current window size
     $scope.windowSize = screen.width;
@@ -212,6 +212,15 @@ chat.controller('controller', function($scope,$window,$cookies,Upload) {
             fileName: file.name,
             receive: queue,
             type: type
+        });
+    };
+
+    $scope.startWhiteboard = function() {
+        var cUser = $scope.currentUser;
+        var queue = $scope.activeChatWindow;
+        socket.emit('startWhiteboard', {
+            name: cUser,
+            receive: queue
         });
     };
 

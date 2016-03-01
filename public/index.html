@@ -12,11 +12,15 @@
     <script src="https://cdn.rawgit.com/Luegg/angularjs-scroll-glue/master/src/scrollglue.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-cookies.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.5.0/fabric.min.js"></script>
     <script src="js/ng-file-upload-all.min.js"></script>
-    <script src="js/controller.js"></script>
+    <script src="js/mainController.js"></script>
+    <script src="js/whiteboardController.js"></script>
 </head>
 
-<body ng-controller="controller" class="ng-cloak">
+<body ng-controller="mainController" class="ng-cloak">
+
+<div ng-include src="'includes/whiteboard.html'"></div>
 
 <div id="newUser" ng-show="!chatStarted">
     <div id="newUserFormWrap">
@@ -70,7 +74,10 @@
 <div id="contain">
     <div class="container-fluid">
         <div class="">
-            <h2><span ng-show="pm">Private Message: </span>{{activeChatWindow}}</h2>
+            <div id="topChat">
+                <h2><span ng-show="pm">Private Message: </span>{{activeChatWindow}}</h2>
+                <button class="btn btn-default" ng-click="startWhiteboard()" ng-show="pm">Start Whiteboard</button>
+            </div>
             <div class="loader" ng-show="imgUploading">
                 <img src="/img/grid.svg">
                 <h2>Uploading</h2>

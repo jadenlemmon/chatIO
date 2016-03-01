@@ -1,0 +1,38 @@
+<div ng-controller="whiteboardController">
+    <div id="overlay" ng-show="whiteboard.request || whiteboard.active"></div>
+    <div class="modal" tabindex="-1" role="dialog" ng-show="whiteboard.request">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!--<button type="button" class="close" ng-click="closeModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+                    <h4 class="modal-title">Whiteboard Request</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{whiteboard.user}} has requested to start a whiteboard session with you.</p>
+                    <p>Would you like to accept?</p>
+                    <button class="btn btn-default" ng-click="startWhiteboardSession()">Yes</button>
+                    <button class="btn btn-default">No</button>
+                </div>
+                <div class="clearfix"></div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" role="dialog" ng-show="whiteboard.active" id="whiteboardActive">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Draw below</h4>
+                </div>
+                <div class="modal-body">
+                    <canvas id="c"></canvas>
+                </div>
+                <div class="clearfix"></div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

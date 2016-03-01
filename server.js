@@ -15,9 +15,10 @@ app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
 });
 
-//Holds active sockets and usernames
+//Holds active sockets, usernames, whiteboards
 var connectedUsers = [],
-    connectedUserNames = [];
+    connectedUserNames = [],
+    whiteboards = [];
 
 io.on('connection', function(socket){
 
@@ -27,6 +28,43 @@ io.on('connection', function(socket){
     socket.on('chat message', function(msg){
         io.emit('chat message', msg);
         mongo.insert(msg);
+    });
+
+    /**
+     * Sends a request to a user to start a whiteboard session
+     */
+    socket.on('startWhiteboard', function(msg){
+        for(var i = 0; i < connectedUserNames.length; i++) {
+            if(connectedUserNames[i].name == msg.receive) {
+                connectedUsers[i].emit('startWhiteboard', msg);
+            }
+        }
+    });
+
+    /**
+     * Updates whiteboards in a whiteboard session
+     */
+    socket.on('whiteboardSessionUpdate', function(msg){
+        for(var i = 0; i < connectedUserNames.length; i++) {
+            if(connectedUserNames[i].name == msg.receive) {
+                connectedUsers[i].emit('whiteboardSessionUpdate', msg);
+            }
+        }
+    });
+
+    /**
+     * Starts a whiteboard session with users
+     */
+    socket.on('startWhiteboardSession', function(msg){
+        whiteboards.push({
+            user1: msg.name,
+            user2: msg.receive
+        });
+        for(var i = 0; i < connectedUserNames.length; i++) {
+            if(connectedUserNames[i].name == msg.receive || connectedUserNames[i].name == msg.name) {
+                connectedUsers[i].emit('launchWhiteboard');
+            }
+        }
     });
 
     /**

@@ -24,6 +24,16 @@ Mixins
   margin: auto;
 }
 
+//red btn
+@mixin redBtn() {
+  background: $orange none repeat scroll 0 0;
+  border: medium none;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 10px 20px;
+}
+
 /**
 ========
 General
@@ -197,6 +207,18 @@ nav h1 {
 Chat Window
 ========
 **/
+#topChat {
+  height: 65px;
+
+  .btn {
+    @include redBtn();
+    float: right;
+    margin: 10px 0;
+  }
+  h2 {
+    float: left;
+  }
+}
 #chatSendMessage {
   bottom: 0;
   height: 110px;
@@ -288,13 +310,8 @@ Sidebar
   z-index: 1;
 
   .btn {
-    background: #e3635d none repeat scroll 0 0;
-    border: medium none;
-    color: #fff;
-    font-size: 20px;
-    font-weight: 700;
+    @include redBtn();
     margin: 28px 33px 0;
-    padding: 10px 20px;
   }
 
   ul li {
@@ -340,6 +357,40 @@ Sidebar
 .unRead.changed {
   -webkit-animation: bounce 1000ms linear both;
   animation: bounce 1000ms linear both;
+}
+/**
+========
+Modals
+========
+**/
+#overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.8;
+  left: 0;
+  top: 0;
+  z-index: 1200;
+}
+.modal {
+  display: block;
+  z-index: 1201;
+}
+#whiteboardActive {
+  .modal-dialog {
+    height: 90%;
+    width: 90%;
+  }
+  .modal-content {
+    height: 100%;
+  }
+  .modal-body {
+    height: 85%;
+    border: 7px solid #eee;
+    margin: 20px;
+  }
+
 }
 
 /**
