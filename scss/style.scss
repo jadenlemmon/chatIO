@@ -1,5 +1,31 @@
 /**
 ========
+Variables
+========
+**/
+$orange: #FF6F69;
+$green: #96ceb4;
+
+/**
+========
+Mixins
+========
+**/
+
+//absolute centers an element
+@mixin absoluteAuto($width,$height) {
+  width: $width;
+  height: $height;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  margin: auto;
+}
+
+/**
+========
 General
 ========
 **/
@@ -81,7 +107,7 @@ Splash
   }
   .logo .fa {
     font-size: 150px;
-    color: #FF6F69;
+    color: $orange;
   }
 
 
@@ -100,7 +126,7 @@ Splash
     width: 100%;
   }
   input[type='submit'] {
-    color: #FF6F69;
+    color: $orange;
     font-size: 73px;
     font-weight: 800;
     text-align: center;
@@ -117,7 +143,7 @@ Splash
 
 #chooseIcons {
   h2 {
-    color: #FF6F69;
+    color: $orange;
     font-size: 40px;
     font-weight: 900;
   }
@@ -147,7 +173,7 @@ Nav
 ========
 **/
 nav.navbar-fixed-top {
-  background: #ff6f69 none repeat scroll 0 0;
+  background: $orange none repeat scroll 0 0;
   border-bottom: 6px solid #E3635D;
 }
 nav h1 {
@@ -156,7 +182,7 @@ nav h1 {
   margin: 12px 0;
 }
 .currentUserText {
-  color: #FF6F69;
+  color: $orange;
 }
 #mobileNav .fa {
   font-size: 40px;
@@ -181,7 +207,7 @@ Chat Window
   margin-left: 235px;
 
   button, button:hover {
-    background: #96ceb4 none repeat scroll 0 0;
+    background: $green none repeat scroll 0 0;
     border: medium none;
     box-shadow: 0 -5px 0 #88baa3 inset;
     color: #fff;
@@ -219,7 +245,23 @@ Chat Window
   }
 }
 .chatWindow.dragover {
-  box-shadow: 0 0 5px 4px #96ceb4;
+  box-shadow: 0 0 5px 4px $green;
+}
+.loader {
+  @extend .chatWindow;
+
+  background: $orange;
+  z-index: 1;
+  opacity: 0.7;
+
+  img {
+    @include absoluteAuto(150px,150px);
+  }
+  h2 {
+    text-align: center;
+    color: #fff;
+    font-weight: 900;
+  }
 }
 
 #messageType:focus, #messageType {

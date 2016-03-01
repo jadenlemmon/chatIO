@@ -71,6 +71,10 @@
     <div class="container-fluid">
         <div class="">
             <h2><span ng-show="pm">Private Message: </span>{{activeChatWindow}}</h2>
+            <div class="loader" ng-show="imgUploading">
+                <img src="/img/grid.svg">
+                <h2>Uploading</h2>
+            </div>
             <div class="chatWindow" ng-model="imgPreview" ngf-drop="uploadFile($file)" scroll-glue>
                 <div ng-repeat="message in messages[activeChatWindow]"
                      ng-class="{'currentUserText': message.name == currentUser}">{{message.name}} : <span ng-if="message.img != 'yes'">{{message.text}}</span><img ng-src="{{message.text}}" ng-if="message.img == 'yes'"></div>

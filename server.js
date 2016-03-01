@@ -4,12 +4,9 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var mongo = require('./db.js');
 var AWS = require('aws-sdk');
-AWS.config.region = 'us-west-2';
-AWS.config.update({
-    accessKeyId: 'AKIAJXKJK62WS5WUQL7A',
-    secretAccessKey: '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'
-});
+require('./global.js');
 
+AWS.config.region = 'us-west-2';
 var s3 = new AWS.S3();
 
 app.use(express.static(__dirname + '/public'));
@@ -29,11 +26,17 @@ io.on('connection', function(socket){
         mongo.insert(msg);
     });
 
+    //socket.on('pastMessages', function(msg){
+    //    mongo.getChats(function(data) {
+    //        socket.emit('chats',data);
+    //    });
+    //});
+
     socket.on('private message', function(msg){
         //send to receiving user
         console.log(connectedUserNames);
         for(var i = 0; i < connectedUserNames.length; i++) {
-            if(connectedUserNames[i].name == msg.receive) {
+            if(connectedUserNames[i].name == msg.receive || connectedUserNames[i].name == msg.name) {
                 connectedUsers[i].emit('private message', msg);
             }
         }
@@ -69,9 +72,19 @@ io.on('connection', function(socket){
                 var msg = {
                     name: file.name,
                     img: 'yes',
-                    text: 'https://s3-us-west-2.amazonaws.com/chatio/uploads/'+file.fileName
+                    text: 'https://s3-us-west-2.amazonaws.com/chatio/uploads/'+file.fileName,
+                    receive: file.receive
                 };
-                io.emit('chat message', msg);
+                if(!file.privateUpload) {
+                    io.emit('chat message', msg);
+                }
+                else {
+                    for(var i = 0; i < connectedUserNames.length; i++) {
+                        if(connectedUserNames[i].name == file.receive || connectedUserNames[i].name == file.name) {
+                            connectedUsers[i].emit('private message', msg);
+                        }
+                    }
+                }
                 mongo.insert(msg);
             }
         });

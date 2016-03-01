@@ -36,6 +36,9 @@ chat.controller('controller', function($scope,$window,$cookies,Upload) {
     $scope.pm = false;
     $scope.toggleMobile = false;
 
+    //img uploading loader
+    $scope.imgUploading = false;
+
     $scope.messages = {
         'Main Lobby': []
     };
@@ -85,18 +88,24 @@ chat.controller('controller', function($scope,$window,$cookies,Upload) {
                 text: msg.text,
                 img: msg.img
             });
+            if($scope.imgUploading && msg.img == 'yes') {
+                $scope.imgUploading = false;
+            }
             $scope.$apply();
 
             playAudio();
         });
 
         socket.on('private message', function(msg){
-            if(!$scope.messages[msg.name]) {
-                $scope.messages[msg.name] = [];
+            var cUser = $scope.currentUser;
+            var queue = msg.name == cUser ? msg.receive : msg.name;
+            if(!$scope.messages[queue]) {
+                $scope.messages[queue] = [];
             }
-            $scope.messages[msg.name].push({
+            $scope.messages[queue].push({
                 name: msg.name,
-                text: msg.text
+                text: msg.text,
+                img: msg.img
             });
 
             if($scope.activeChatWindow !== msg.name) {
@@ -105,6 +114,10 @@ chat.controller('controller', function($scope,$window,$cookies,Upload) {
                         $scope.connectedUsers[i].unRead++;
                     }
                 }
+            }
+
+            if($scope.imgUploading && msg.img == 'yes') {
+                $scope.imgUploading = false;
             }
             $scope.$apply();
 
@@ -154,13 +167,6 @@ chat.controller('controller', function($scope,$window,$cookies,Upload) {
                 text: message,
                 receive: queue
             });
-            if(!$scope.messages[queue]) {
-                $scope.messages[queue] = [];
-            }
-            $scope.messages[queue].push({
-                name: cUser,
-                text: message
-            });
         }
         $scope.messageToSend = '';
     };
@@ -174,17 +180,28 @@ chat.controller('controller', function($scope,$window,$cookies,Upload) {
                     $scope.connectedUsers[i].unRead = 0;
                 }
             }
+            //socket.emit('pastMessages', {
+            //    queue: chat
+            //});
         }
         $scope.toggleMobileNav();
     };
 
     // upload on file select or drop
     $scope.uploadFile = function (file) {
+        $scope.imgUploading = true;
+        var queue = $scope.activeChatWindow;
         var cUser = $scope.currentUser;
+        var privateUpload = true;
+        if(queue == 'Main Lobby') {
+            privateUpload = false;
+        }
         socket.emit('upload', {
             name: cUser,
             file: file,
-            fileName: file.name
+            fileName: file.name,
+            receive: queue,
+            privateUpload: privateUpload
         });
     };
 
