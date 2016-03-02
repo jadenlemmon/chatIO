@@ -19,7 +19,7 @@ app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/deploy', function(req, res){
+app.post('/deploy', function(req, res){
     console.log(req);
     console.log('deploy');
     console.log(res);
