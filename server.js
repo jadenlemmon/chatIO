@@ -21,6 +21,8 @@ app.get('/', function(req, res){
 
 app.get('/deploy', function(req, res){
     console.log(req);
+    console.log('deploy');
+    console.log(res);
     //var deploy = exec('sh deploy.sh');
     //deploy.stdout.on('data',function(data){
     //    console.log(data); // process output will be displayed here
