@@ -32,7 +32,7 @@ app.post('/deploy', function(req, res){
     if(branch == 'refs/heads/master' && secret == signature) {
         //console.log(req.body.ref);
         console.log('deploy');
-        res.status(400).send('Success');
+        res.status(200).send('Success');
         //console.log(res);
         var deploy = exec('sh deploy.sh');
         deploy.stdout.on('data',function(data){
