@@ -20,9 +20,9 @@ app.get('/', function(req, res){
 });
 
 app.post('/deploy', function(req, res){
-    console.log(req);
+    console.log(req.body);
     console.log('deploy');
-    console.log(res);
+    //console.log(res);
     //var deploy = exec('sh deploy.sh');
     //deploy.stdout.on('data',function(data){
     //    console.log(data); // process output will be displayed here
