@@ -4,8 +4,8 @@ chat.controller('whiteboardController', function($scope) {
         isDrawingMode: true
     });
 
-    canvas.setHeight(screen.height-235);
-    canvas.setWidth(screen.width-195);
+    canvas.setHeight(document.getElementById('drawContain').clientHeight-32);
+    canvas.setWidth(document.getElementById('drawContain').clientWidth-32);
 
     fabric.Object.prototype.transparentCorners = false;
 
