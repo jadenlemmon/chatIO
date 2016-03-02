@@ -1,5 +1,5 @@
 #!/bin/sh
 git pull origin master
 sudo npm update
-sudo stop chat
-sudo start chat
+forever stop server.js
+forever start -o out.log -e err.log server.js
