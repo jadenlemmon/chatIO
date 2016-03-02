@@ -5,21 +5,22 @@ var io = require('socket.io')(http);
 var mongo = require('./db.js');
 var AWS = require('aws-sdk');
 require('./global.js');
-
 var githubhook = require('githubhook');
+
 var github = githubhook({
     secret: process.env.GITHUB_DEPLOY_SECRET,
-    path: '/deploy',
-    host: '*'
+    path: '/deploy'
 });
 
 github.listen();
 
 github.on('*', function (event, repo, ref, data) {
+    console.log('hello');
     console.log(data);
 });
 
 github.on('push', function (repo, ref, data) {
+    console.log('hello');
     console.log(data);
 });
 
