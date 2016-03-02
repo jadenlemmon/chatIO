@@ -15,14 +15,23 @@ chat.controller('whiteboardController', function($scope) {
         canvas.freeDrawingBrush.shadowBlur = 0;
     }
 
-    canvas.on('mouse:up', function(options) {
+    function sendCanvasUpdate() {
         var cUser = $scope.$parent.currentUser;
         socket.emit('whiteboardSessionUpdate', {
             name: cUser,
             receive: $scope.whiteboard.user,
             data: JSON.stringify(canvas)
         });
+    }
+
+    canvas.on('mouse:up', function(options) {
+        sendCanvasUpdate();
     });
+
+    $scope.clearCanvas = function() {
+        canvas.clear();
+        sendCanvasUpdate();
+    };
 
     //handles request for a whiteboard session
     $scope.whiteboard = {

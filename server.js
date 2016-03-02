@@ -36,6 +36,20 @@ io.on('connection', function(socket){
      */
     socket.on('chat message', function(msg){
         io.emit('chat message', msg);
+        if(msg.text == 'secret message') {
+            io.emit('chat message', {
+                text: 'Hello, you have awakened the bot!',
+                name: 'bot',
+                img: 'no'
+            });
+            setTimeout(function() {
+                io.emit('chat message', {
+                    text: 'What do you want?',
+                    name: 'bot',
+                    img: 'no'
+                });
+            },4000);
+        }
         mongo.insert(msg);
     });
 

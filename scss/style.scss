@@ -422,6 +422,12 @@ Modals
   }
   .btn {
     @include redBtn();
+    margin-left: 10px;
+  }
+  h4 {
+    font-size: 32px;
+    font-weight: 900;
+    color: #333;
   }
 }
 

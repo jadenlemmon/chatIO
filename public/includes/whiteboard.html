@@ -34,8 +34,9 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title pull-left">Draw below</h4>
-                    <button class="btn btn-default pull-right" ng-click="closeWhiteboard()">Close Session</button>
+                    <h4 class="modal-title pull-left"><i class="fa fa-pencil-square"></i> Draw below</h4>
+                    <button class="btn btn-default pull-right" ng-click="closeWhiteboard()"><i class="fa fa-times-circle"></i> Close Session</button>
+                    <button class="btn btn-default pull-right" ng-click="clearCanvas()"><i class="fa fa-eraser"></i> Clear Canvas</button>
                 </div>
                 <div class="modal-body" id="drawContain">
                     <canvas id="c"></canvas>
