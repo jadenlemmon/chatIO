@@ -5,8 +5,8 @@ var io = require('socket.io')(http);
 var mongo = require('./db.js');
 var AWS = require('aws-sdk');
 require('./global.js');
-var createHandler = require('github-webhook-handler')
-var handler = createHandler({ path: '/deploy', secret: process.env.GITHUB_DEPLOY_SECRET })
+var createHandler = require('github-webhook-handler');
+var handler = createHandler({ path: '/deploy', secret: process.env.GITHUB_DEPLOY_SECRET });
 
 //used to run shell scripts
 var sys = require('sys');
