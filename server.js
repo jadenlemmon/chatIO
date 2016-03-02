@@ -7,9 +7,14 @@ var mongo = require('./db.js');
 var AWS = require('aws-sdk');
 require('./global.js');
 
-var crypto = require('crypto'),
-    algorithm = 'sha1',
-    password = process.env.GITHUB_DEPLOY_SECRET;
+//var crypto = require('crypto'),
+//    algorithm = 'sha1',
+//    password = process.env.GITHUB_DEPLOY_SECRET;
+
+var crypto = require('crypto')
+    , shasum = crypto.createHash('sha1');
+shasum.update(process.env.GITHUB_DEPLOY_SECRET);
+console.log(shasum.digest('hex'));
 
 function encrypt(text){
     var cipher = crypto.createCipher(algorithm,password)
@@ -23,6 +28,10 @@ function decrypt(text){
     var dec = decipher.update(text,'hex','utf8')
     dec += decipher.final('utf8');
     return dec;
+}
+
+function signBlob (key) {
+    return 'sha1=' + crypto.createHmac('sha1', key).digest('hex');
 }
 
 //var githubhook = require('githubhook');
@@ -60,8 +69,9 @@ app.get('/', function(req, res){
 
 app.post('/deploy', function(req, res){
     var branch = req.body.ref;
-    var secret = req.headers.X-Hub-Signature;
-    console.log(decrypt(secret));
+    var secret = req.headers['x-hub-signature'];
+
+    console.log(secret);
 
     //if(branch == 'refs/heads/master') {
     //    //console.log(req.body.ref);
