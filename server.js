@@ -5,8 +5,21 @@ var io = require('socket.io')(http);
 var mongo = require('./db.js');
 var AWS = require('aws-sdk');
 require('./global.js');
-var createHandler = require('github-webhook-handler');
-var handler = createHandler({ path: '/deploy', secret: process.env.GITHUB_DEPLOY_SECRET });
+
+var githubhook = require('githubhook');
+var github = githubhook({
+    secret: process.env.GITHUB_DEPLOY_SECRET
+});
+
+github.listen();
+
+github.on('*', function (event, repo, ref, data) {
+    console.log(data);
+});
+
+github.on('event', function (repo, ref, data) {
+    console.log(data);
+});
 
 //used to run shell scripts
 var sys = require('sys');
@@ -19,12 +32,6 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
-});
-
-handler.on('push', function (event) {
-    console.log('Received a push event for %s to %s',
-        event.payload.repository.name,
-        event.payload.ref)
 });
 
 //app.post('/deploy', function(req, res){
