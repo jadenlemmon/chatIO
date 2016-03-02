@@ -7,7 +7,6 @@
     "body-parser": "^1.15.0",
     "crypto": "0.0.3",
     "express": "^4.10.2",
-    "githubhook": "^1.4.0",
     "gulp-git": "^1.7.0",
     "mongodb": "^2.1.7",
     "socket.io": "^1.4.5"

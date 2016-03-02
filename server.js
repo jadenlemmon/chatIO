@@ -6,52 +6,7 @@ var io = require('socket.io')(http);
 var mongo = require('./db.js');
 var AWS = require('aws-sdk');
 require('./global.js');
-
-//var crypto = require('crypto'),
-//    algorithm = 'sha1',
-//    password = process.env.GITHUB_DEPLOY_SECRET;
-
-var crypto = require('crypto')
-    , shasum = crypto.createHash('sha1');
-shasum.update(process.env.GITHUB_DEPLOY_SECRET);
-console.log(shasum.digest('hex'));
-
-function encrypt(text){
-    var cipher = crypto.createCipher(algorithm,password)
-    var crypted = cipher.update(text,'utf8','hex')
-    crypted += cipher.final('hex');
-    return crypted;
-}
-
-function decrypt(text){
-    var decipher = crypto.createDecipher(algorithm,password)
-    var dec = decipher.update(text,'hex','utf8')
-    dec += decipher.final('utf8');
-    return dec;
-}
-
-function signBlob (key) {
-    return 'sha1=' + crypto.createHmac('sha1', key).digest('hex');
-}
-
-//var githubhook = require('githubhook');
-//
-//var github = githubhook({
-//    secret: process.env.GITHUB_DEPLOY_SECRET,
-//    path: '/deploy'
-//});
-//
-//github.listen();
-//
-//github.on('*', function (event, repo, ref, data) {
-//    console.log('hello');
-//    console.log(data);
-//});
-//
-//github.on('push', function (repo, ref, data) {
-//    console.log('hello');
-//    console.log(data);
-//});
+var crypto = require('crypto');
 
 //used to run shell scripts
 var sys = require('sys');
@@ -67,25 +22,26 @@ app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
 });
 
+//automate deploy endpoint
 app.post('/deploy', function(req, res){
     var branch = req.body.ref;
-    var secret = req.headers['x-hub-signature'];
+    var secret = req.headers['x-hub-signature'].replace(/^sha1=/, '');
+    var signature = crypto.createHmac('sha1', process.env.GITHUB_DEPLOY_SECRET).update(JSON.stringify(req.body)).digest('hex');
 
-    console.log(secret);
-
-    //if(branch == 'refs/heads/master') {
-    //    //console.log(req.body.ref);
-    //    console.log('deploy');
-    //    res.status(400).send('Success');
-    //    //console.log(res);
-    //    var deploy = exec('sh deploy.sh');
-    //    deploy.stdout.on('data',function(data){
-    //        console.log(data); // process output will be displayed here
-    //    });
-    //    deploy.stderr.on('data',function(data){
-    //        console.log(data); // process error output will be displayed here
-    //    });
-    //}
+    //verify secret matches
+    if(branch == 'refs/heads/master' && secret == signature) {
+        //console.log(req.body.ref);
+        console.log('deploy');
+        res.status(400).send('Success');
+        //console.log(res);
+        var deploy = exec('sh deploy.sh');
+        deploy.stdout.on('data',function(data){
+            console.log(data); // process output will be displayed here
+        });
+        deploy.stderr.on('data',function(data){
+            console.log(data); // process error output will be displayed here
+        });
+    }
 });
 
 //Holds active sockets, usernames, whiteboards
