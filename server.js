@@ -20,7 +20,7 @@ app.get('/', function(req, res){
 });
 
 app.post('/deploy', function(req, res){
-    console.log(req.body);
+    console.log(req);
     console.log('deploy');
     //console.log(res);
     //var deploy = exec('sh deploy.sh');
