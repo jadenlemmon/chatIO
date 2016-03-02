@@ -20,7 +20,7 @@
 
 <body ng-controller="mainController" class="ng-cloak">
 
-<div ng-include src="'includes/whiteboard.html'"></div>
+<div ng-include src="'includes/whiteboard.html'" ng-if="chatStarted"></div>
 
 <div id="newUser" ng-show="!chatStarted">
     <div id="newUserFormWrap">

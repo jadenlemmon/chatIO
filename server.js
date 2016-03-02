@@ -18,7 +18,16 @@ app.get('/', function(req, res){
 //Holds active sockets, usernames, whiteboards
 var connectedUsers = [],
     connectedUserNames = [],
-    whiteboards = [];
+    whiteboards = [],
+    remaining;
+
+function sendByUsername(name1,name2,callback) {
+    for(var i = 0; i < connectedUserNames.length; i++) {
+        if(connectedUserNames[i].name == name1 || connectedUserNames[i].name == name2) {
+            callback(connectedUsers[i]);
+        }
+    }
+}
 
 io.on('connection', function(socket){
 
@@ -31,40 +40,59 @@ io.on('connection', function(socket){
     });
 
     /**
+     * Close whiteboard session
+     */
+    socket.on('closeWhiteboard', function(msg){
+        sendByUsername(msg.receive,msg.name,function(user) {
+            user.emit('closeWhiteboard');
+        });
+    });
+
+    /**
      * Sends a request to a user to start a whiteboard session
      */
     socket.on('startWhiteboard', function(msg){
-        for(var i = 0; i < connectedUserNames.length; i++) {
-            if(connectedUserNames[i].name == msg.receive) {
-                connectedUsers[i].emit('startWhiteboard', msg);
+        sendByUsername(msg.receive,msg.receive,function(user) {
+            user.emit('startWhiteboard', msg);
+        });
+        var number = 15;
+        remaining = setInterval(function(){
+            sendByUsername(msg.receive,msg.name,function(user) {
+                user.emit('whiteboardRemaining', number);
+            });
+            //socket.emit('whiteboardRemaining', number);
+            number--;
+            if(number < 0) {
+                sendByUsername(msg.receive,msg.name,function(user) {
+                    user.emit('closeWhiteboard');
+                });
+                //socket.emit('closeWhiteboard');
+                clearInterval(remaining);
             }
-        }
+        },1000);
     });
 
     /**
      * Updates whiteboards in a whiteboard session
      */
     socket.on('whiteboardSessionUpdate', function(msg){
-        for(var i = 0; i < connectedUserNames.length; i++) {
-            if(connectedUserNames[i].name == msg.receive) {
-                connectedUsers[i].emit('whiteboardSessionUpdate', msg);
-            }
-        }
+        sendByUsername(msg.receive,msg.name,function(user) {
+            user.emit('whiteboardSessionUpdate', msg);
+        });
     });
 
     /**
      * Starts a whiteboard session with users
      */
     socket.on('startWhiteboardSession', function(msg){
+        clearInterval(remaining);
         whiteboards.push({
             user1: msg.name,
             user2: msg.receive
         });
-        for(var i = 0; i < connectedUserNames.length; i++) {
-            if(connectedUserNames[i].name == msg.receive || connectedUserNames[i].name == msg.name) {
-                connectedUsers[i].emit('launchWhiteboard');
-            }
-        }
+        sendByUsername(msg.receive,msg.name,function(user) {
+            user.emit('launchWhiteboard', msg);
+        });
     });
 
     /**
@@ -86,11 +114,9 @@ io.on('connection', function(socket){
     socket.on('private message', function(msg){
         //send to receiving user
         console.log(connectedUserNames);
-        for(var i = 0; i < connectedUserNames.length; i++) {
-            if(connectedUserNames[i].name == msg.receive || connectedUserNames[i].name == msg.name) {
-                connectedUsers[i].emit('private message', msg);
-            }
-        }
+        sendByUsername(msg.receive,msg.name,function(user) {
+            user.emit('private message', msg);
+        });
         mongo.insert(msg);
     });
 
@@ -143,11 +169,9 @@ io.on('connection', function(socket){
                     io.emit('chat message', msg);
                 }
                 else {
-                    for(var i = 0; i < connectedUserNames.length; i++) {
-                        if(connectedUserNames[i].name == file.receive || connectedUserNames[i].name == file.name) {
-                            connectedUsers[i].emit('private message', msg);
-                        }
-                    }
+                    sendByUsername(file.receive,file.name,function(user) {
+                        user.emit('private message', msg);
+                    });
                 }
                 mongo.insert(msg);
             }

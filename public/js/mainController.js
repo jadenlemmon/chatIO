@@ -9,6 +9,7 @@ chat.controller('mainController', function($scope,$window,$cookies,Upload) {
     w.bind('resize', function () {
         $scope.windowSize = screen.width;
         $scope.isMobile = screen.width < 640;
+        console.log(screen.width);
         $scope.$apply();
     });
 
@@ -216,12 +217,7 @@ chat.controller('mainController', function($scope,$window,$cookies,Upload) {
     };
 
     $scope.startWhiteboard = function() {
-        var cUser = $scope.currentUser;
-        var queue = $scope.activeChatWindow;
-        socket.emit('startWhiteboard', {
-            name: cUser,
-            receive: queue
-        });
+        $scope.$broadcast('whiteboard');
     };
 
     if($cookies.getObject('chatIO')) {

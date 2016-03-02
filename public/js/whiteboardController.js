@@ -1,11 +1,11 @@
 chat.controller('whiteboardController', function($scope) {
 
-    var canvas = this.__canvas = new fabric.Canvas('c', {
+    var canvas = new fabric.Canvas('c', {
         isDrawingMode: true
     });
 
-    canvas.setHeight(500);
-    canvas.setWidth(800);
+    canvas.setHeight(screen.height-235);
+    canvas.setWidth(screen.width-195);
 
     fabric.Object.prototype.transparentCorners = false;
 
@@ -17,7 +17,6 @@ chat.controller('whiteboardController', function($scope) {
 
     canvas.on('mouse:up', function(options) {
         var cUser = $scope.$parent.currentUser;
-        //console.log(JSON.stringify(canvas));
         socket.emit('whiteboardSessionUpdate', {
             name: cUser,
             receive: $scope.whiteboard.user,
@@ -29,12 +28,33 @@ chat.controller('whiteboardController', function($scope) {
     $scope.whiteboard = {
         request: false,
         user: false,
-        active: false
+        active: false,
+        awaitingResponse: false,
+        remaining: 15
     };
+
+    $scope.$on('whiteboard', function(e) {
+        $scope.whiteboard.awaitingResponse = true;
+        console.log($scope.whiteboard);
+        var cUser = $scope.currentUser;
+        var queue = $scope.activeChatWindow;
+        socket.emit('startWhiteboard', {
+            name: cUser,
+            receive: queue
+        });
+    });
 
     $scope.startWhiteboardSession = function() {
         var cUser = $scope.$parent.currentUser;
         socket.emit('startWhiteboardSession', {
+            name: cUser,
+            receive: $scope.whiteboard.user
+        });
+    };
+
+    $scope.closeWhiteboard = function() {
+        var cUser = $scope.currentUser;
+        socket.emit('closeWhiteboard', {
             name: cUser,
             receive: $scope.whiteboard.user
         });
@@ -46,23 +66,30 @@ chat.controller('whiteboardController', function($scope) {
         $scope.$apply();
     });
 
-    socket.on('launchWhiteboard', function() {
-        $scope.whiteboard.active = true;
+    socket.on('whiteboardRemaining', function(msg) {
+        $scope.whiteboard.remaining = msg;
+        $scope.$apply();
+    });
+
+    socket.on('closeWhiteboard', function() {
+        $scope.whiteboard.active = false;
+        $scope.whiteboard.user = false;
+        $scope.whiteboard.awaitingResponse = false;
         $scope.whiteboard.request = false;
         $scope.$apply();
     });
 
-    socket.on('whiteboardSessionUpdate', function(data) {
-        console.log(data.data);
-        canvas.loadFromJSON(data.data);
+    socket.on('launchWhiteboard', function(msg) {
+        $scope.whiteboard.awaitingResponse = false;
+        $scope.whiteboard.active = true;
+        $scope.whiteboard.request = false;
+        if(!$scope.whiteboard.user) {
+            $scope.whiteboard.user = msg.name;
+        }
+        $scope.$apply();
     });
 
-    //(function() {
-    //    //var $ = function(id){return document.getElementById(id)};
-    //
-    //
-    //
-    //})();
-
-
+    socket.on('whiteboardSessionUpdate', function(data) {
+        canvas.loadFromJSON(data.data, canvas.renderAll.bind(canvas));
+    });
 });

@@ -34,6 +34,16 @@ Mixins
   padding: 10px 20px;
 }
 
+//green btn
+@mixin greenBtn() {
+  background: $green none repeat scroll 0 0;
+  border: medium none;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 10px 20px;
+}
+
 /**
 ========
 General
@@ -77,6 +87,12 @@ input {
 #contain {
   padding-left: 220px;
   width: 100%;
+}
+.btn.green {
+  @include greenBtn();
+}
+.btn.red {
+  @include redBtn();
 }
 
 /**
@@ -171,11 +187,6 @@ Splash
     background: #ddd none repeat scroll 0 0;
   }
 }
-
-//#chooseIcons > div {
-//  margin: 15px auto;
-//  width: 235px;
-//}
 
 /**
 ========
@@ -372,10 +383,29 @@ Modals
   left: 0;
   top: 0;
   z-index: 1200;
+
+  #response {
+    @include absoluteAuto(400px,150px);
+    position: fixed;
+    text-align: center;
+
+    .remaining {
+      font-size: 50px;
+      color: #fff;
+    }
+  }
+  h2 {
+    color: #fff;
+    font-weight: 900;
+  }
 }
 .modal {
   display: block;
   z-index: 1201;
+  top: 0;
+}
+.modal.ng-hide {
+  top: -10000px;
 }
 #whiteboardActive {
   .modal-dialog {
@@ -390,7 +420,9 @@ Modals
     border: 7px solid #eee;
     margin: 20px;
   }
-
+  .btn {
+    @include redBtn();
+  }
 }
 
 /**
