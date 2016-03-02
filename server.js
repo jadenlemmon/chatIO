@@ -34,7 +34,7 @@ app.post('/deploy', function(req, res){
         console.log('deploy');
         res.status(200).send('Success');
         //console.log(res);
-        var deploy = exec('sh deploy.sh');
+        var deploy = exec('sh /var/www/node/deploy.sh');
         deploy.stdout.on('data',function(data){
             console.log(data); // process output will be displayed here
         });
