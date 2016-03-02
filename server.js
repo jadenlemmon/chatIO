@@ -6,6 +6,10 @@ var mongo = require('./db.js');
 var AWS = require('aws-sdk');
 require('./global.js');
 
+//used to run shell scripts
+var sys = require('sys');
+var exec = require('child_process').exec;
+
 AWS.config.region = 'us-west-2';
 var s3 = new AWS.S3();
 
@@ -13,6 +17,17 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
+});
+
+app.get('/deploy', function(req, res){
+    console.log(req);
+    //var deploy = exec('sh deploy.sh');
+    //deploy.stdout.on('data',function(data){
+    //    console.log(data); // process output will be displayed here
+    //});
+    //deploy.stderr.on('data',function(data){
+    //    console.log(data); // process error output will be displayed here
+    //});
 });
 
 //Holds active sockets, usernames, whiteboards
