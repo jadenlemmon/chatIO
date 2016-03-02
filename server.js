@@ -5,6 +5,8 @@ var io = require('socket.io')(http);
 var mongo = require('./db.js');
 var AWS = require('aws-sdk');
 require('./global.js');
+var createHandler = require('github-webhook-handler')
+var handler = createHandler({ path: '/deploy', secret: process.env.GITHUB_DEPLOY_SECRET })
 
 //used to run shell scripts
 var sys = require('sys');
@@ -19,18 +21,24 @@ app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
 });
 
-app.post('/deploy', function(req, res){
-    console.log(req);
-    console.log('deploy');
-    //console.log(res);
-    //var deploy = exec('sh deploy.sh');
-    //deploy.stdout.on('data',function(data){
-    //    console.log(data); // process output will be displayed here
-    //});
-    //deploy.stderr.on('data',function(data){
-    //    console.log(data); // process error output will be displayed here
-    //});
+handler.on('push', function (event) {
+    console.log('Received a push event for %s to %s',
+        event.payload.repository.name,
+        event.payload.ref)
 });
+
+//app.post('/deploy', function(req, res){
+//    console.log(req);
+//    console.log('deploy');
+//    //console.log(res);
+//    //var deploy = exec('sh deploy.sh');
+//    //deploy.stdout.on('data',function(data){
+//    //    console.log(data); // process output will be displayed here
+//    //});
+//    //deploy.stderr.on('data',function(data){
+//    //    console.log(data); // process error output will be displayed here
+//    //});
+//});
 
 //Holds active sockets, usernames, whiteboards
 var connectedUsers = [],
