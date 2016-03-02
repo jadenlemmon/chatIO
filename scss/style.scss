@@ -519,6 +519,18 @@ Animations
 Media Queries
 ========
 **/
+@media(max-width: 960px) {
+  #topChat h2 {
+    float: none;
+    font-size: 15px;
+  }
+  #topChat .btn {
+    float: none;
+    margin: 0;
+    font-size: 12px;
+    padding: 7px;
+  }
+}
 @media(max-width: 640px) {
   #sideBar {
     left: -220px;
