@@ -18,7 +18,7 @@ github.on('*', function (event, repo, ref, data) {
     console.log(data);
 });
 
-github.on('event', function (repo, ref, data) {
+github.on('push', function (repo, ref, data) {
     console.log(data);
 });
 
@@ -35,7 +35,7 @@ app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
 });
 
-//app.post('/deploy', function(req, res){ 
+//app.post('/deploy', function(req, res){
 //    console.log(req);
 //    console.log('deploy');
 //    //console.log(res);
