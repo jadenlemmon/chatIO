@@ -8,7 +8,8 @@ require('./global.js');
 
 var githubhook = require('githubhook');
 var github = githubhook({
-    secret: process.env.GITHUB_DEPLOY_SECRET
+    secret: process.env.GITHUB_DEPLOY_SECRET,
+    path: '/deploy'
 });
 
 github.listen();
