@@ -64,6 +64,9 @@ io.on('connection', function(socket){
      * Receive public chat message
      */
     socket.on('chat message', function(msg){
+        if(msg.text.startsWith('http')) {
+            msg.link = true;
+        }
         io.emit('chat message', msg);
         if(msg.text == 'secret message') {
             io.emit('chat message', {

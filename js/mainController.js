@@ -92,7 +92,8 @@ chat.controller('mainController', function($scope,$window,$cookies,Upload) {
             $scope.messages['Main Lobby'].push({
                 name: msg.name,
                 text: msg.text,
-                img: msg.img
+                img: msg.img,
+                link: !!msg.link
             });
             if($scope.imgUploading && msg.img == 'yes') {
                 $scope.imgUploading = false;

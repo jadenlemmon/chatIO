@@ -4,6 +4,7 @@ var git = require('gulp-git');
 var sass = require('gulp-sass');
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
+var uglify = require('gulp-uglifyjs');
 
 gulp.task('default', function() {
     // place code for your default task here //
@@ -35,4 +36,21 @@ gulp.task('serve', function() {
     });
 
     gulp.watch(['*.html', 'styles/**/*.css', 'scripts/**/*.js'], {cwd: 'public'}, reload);
+});
+
+var files = [
+    'js/ng-file-upload-all.min.js',
+    'js/mainController.js',
+    'js/whiteboardController.js'
+];
+
+gulp.task('uglify', function() {
+    gulp.src(files)
+        .pipe(uglify('app.js', {
+            mangle: false
+            //output: {
+            //    beautify: true
+            //}
+        }))
+        .pipe(gulp.dest('public/js'))
 });

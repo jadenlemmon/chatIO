@@ -13,9 +13,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-cookies.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.5.0/fabric.min.js"></script>
-    <script src="js/ng-file-upload-all.min.js"></script>
-    <script src="js/mainController.js"></script>
-    <script src="js/whiteboardController.js"></script>
+    <script src="js/app.js"></script>
 </head>
 
 <body ng-controller="mainController" class="ng-cloak">
@@ -84,7 +82,7 @@
             </div>
             <div class="chatWindow" ng-model="imgPreview" ngf-drop="uploadFile($file)" scroll-glue>
                 <div ng-repeat="message in messages[activeChatWindow]"
-                     ng-class="{'currentUserText': message.name == currentUser}">{{message.name}} : <span ng-if="message.img !== 'yes'">{{message.text}}</span><span ng-if="message.img == 'yes'"><a href="{{message.text}}" target="_blank" class="small">{{message.text}}</a></span>
+                     ng-class="{'currentUserText': message.name == currentUser}">{{message.name}} : <span ng-if="message.img !== 'yes' && !message.link">{{message.text}}</span><span ng-if="message.img == 'yes' || message.link"><a href="{{message.text}}" target="_blank" class="small">{{message.text}}</a></span>
                     <div ng-if="message.img == 'yes'">
                         <img ng-src="{{message.text}}"></div>
                     </div>
