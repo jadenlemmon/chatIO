@@ -8,10 +8,6 @@ var AWS = require('aws-sdk');
 require('./global.js');
 var crypto = require('crypto');
 
-//used to run shell scripts
-var sys = require('sys');
-var exec = require('child_process').exec;
-
 AWS.config.region = 'us-west-2';
 var s3 = new AWS.S3();
 
@@ -20,28 +16,6 @@ app.use(bodyParser.json());
 
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
-});
-
-//automate deploy endpoint
-app.post('/deploy', function(req, res){
-    var branch = req.body.ref;
-    var secret = req.headers['x-hub-signature'].replace(/^sha1=/, '');
-    var signature = crypto.createHmac('sha1', process.env.GITHUB_DEPLOY_SECRET).update(JSON.stringify(req.body)).digest('hex');
-
-    //verify secret matches
-    if(branch == 'refs/heads/master' && secret == signature) {
-        //console.log(req.body.ref);
-        console.log('deploy');
-        res.status(200).send('Success');
-        //console.log(res);
-        var deploy = exec('sh /var/www/node/deploy.sh');
-        deploy.stdout.on('data',function(data){
-            console.log(data); // process output will be displayed here
-        });
-        deploy.stderr.on('data',function(data){
-            console.log(data); // process error output will be displayed here
-        });
-    }
 });
 
 //Holds active sockets, usernames, whiteboards
@@ -91,6 +65,7 @@ io.on('connection', function(socket){
     socket.on('closeWhiteboard', function(msg){
         sendByUsername(msg.receive,msg.name,function(user) {
             user.emit('closeWhiteboard');
+            clearInterval(remaining);
         });
     });
 

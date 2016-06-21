@@ -1,8 +1,8 @@
-var socket;
+//var socket;
 
-var chat = angular.module('chat', ['ngAnimate','luegg.directives', 'ngCookies', 'ngFileUpload']);
+var chat = angular.module('chat', ['ngAnimate','luegg.directives', 'ngCookies', 'ngFileUpload', 'whiteboardcomponent', 'socketservice']);
 
-chat.controller('mainController', function($scope,$window,$cookies,Upload) {
+chat.controller('mainController', function($scope,$window,$cookies,socket) {
 
     //Handle resize for layout changes
     var w = angular.element($window);
@@ -53,11 +53,10 @@ chat.controller('mainController', function($scope,$window,$cookies,Upload) {
     };
 
     $scope.startChat = function(name,data) {
-        socket = io();
+        //socket = io();
 
         socket.on('activeUsers', function(msg) {
             $scope.connectedUsers = msg;
-            $scope.$apply();
         });
 
         socket.on('userJoined', function(msg) {
@@ -71,12 +70,10 @@ chat.controller('mainController', function($scope,$window,$cookies,Upload) {
 
         socket.on('chats', function(msg) {
             $scope.messages['Main Lobby'] = msg;
-            $scope.$apply();
         });
 
         socket.on('privateChats', function(msg) {
             $scope.messages[msg.lobby] = msg.data;
-            $scope.$apply();
         });
 
         socket.on('userLeft', function(msg) {
@@ -98,7 +95,6 @@ chat.controller('mainController', function($scope,$window,$cookies,Upload) {
             if($scope.imgUploading && msg.img == 'yes') {
                 $scope.imgUploading = false;
             }
-            $scope.$apply();
 
             playAudio();
         });
@@ -126,7 +122,6 @@ chat.controller('mainController', function($scope,$window,$cookies,Upload) {
             if($scope.imgUploading && msg.img == 'yes') {
                 $scope.imgUploading = false;
             }
-            $scope.$apply();
 
             playAudio();
         });
@@ -218,7 +213,10 @@ chat.controller('mainController', function($scope,$window,$cookies,Upload) {
     };
 
     $scope.startWhiteboard = function() {
-        $scope.$broadcast('whiteboard');
+        $scope.$broadcast('whiteboard', {
+            name: $scope.currentUser,
+            receive: $scope.activeChatWindow
+        });
     };
 
     if($cookies.getObject('chatIO')) {
