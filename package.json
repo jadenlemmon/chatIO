@@ -1,5 +1,5 @@
 {
-  "name": "chatApp",
+  "name": "chat",
   "version": "0.0.1",
   "description": "simple chat application",
   "dependencies": {
