@@ -1,109 +1,205 @@
 <!DOCTYPE html>
 <html ng-app="chat">
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>Socket IO Chat</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,800,600' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800,600"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+      integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="css/style.css" />
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
     <script src="https://cdn.rawgit.com/Luegg/angularjs-scroll-glue/master/src/scrollglue.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-cookies.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.5.0/fabric.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.5.0/fabric.min.js"></script>
     <script src="js/app.js"></script>
-</head>
+  </head>
 
-<body ng-controller="mainController" class="ng-cloak">
+  <body ng-controller="mainController" class="ng-cloak">
+    <div ng-include src="'includes/whiteboard.html'" ng-if="chatStarted"></div>
 
-<div ng-include src="'includes/whiteboard.html'" ng-if="chatStarted"></div>
-
-<div id="newUser" ng-show="!chatStarted">
-    <div id="newUserFormWrap">
-        <div class="alert alert-danger" id="nameError" ng-if="nameError && yourName.length < 1">Please Enter a Name.</div>
+    <div id="newUser" ng-show="!chatStarted">
+      <div id="newUserFormWrap">
+        <div
+          class="alert alert-danger"
+          id="nameError"
+          ng-if="nameError && yourName.length < 1"
+        >
+          Please Enter a Name.
+        </div>
         <div class="logo text-center">
-            <i class="fa fa-comment"></i>
+          <i class="fa fa-comment"></i>
         </div>
         <div id="chooseIcons">
-            <h2 class="text-center">Choose An Icon</h2>
-            <div>
-                <i class="fa fa-rocket" ng-click="setActiveIcon('rocket')"
-                   ng-class="{'active' : activeIcon == 'rocket'}"></i>
-                <i class="fa fa-hand-peace-o" ng-click="setActiveIcon('hand-peace-o')" ng-class="{'active' : activeIcon ==
-                'hand-peace-o'}"></i>
-                <i class="fa fa-book" ng-click="setActiveIcon('book')" ng-class="{'active' : activeIcon == 'book'}"></i>
-            </div>
+          <h2 class="text-center">Choose An Icon</h2>
+          <div>
+            <i
+              class="fa fa-rocket"
+              ng-click="setActiveIcon('rocket')"
+              ng-class="{'active' : activeIcon == 'rocket'}"
+            ></i>
+            <i
+              class="fa fa-hand-peace-o"
+              ng-click="setActiveIcon('hand-peace-o')"
+              ng-class="{'active' : activeIcon ==
+                'hand-peace-o'}"
+            ></i>
+            <i
+              class="fa fa-book"
+              ng-click="setActiveIcon('book')"
+              ng-class="{'active' : activeIcon == 'book'}"
+            ></i>
+          </div>
         </div>
         <form name="startChatForm" ng-submit="startChat(yourName)" novalidate>
-            <input type="text" name="yourName" ng-model="yourName" id="yourName" placeholder="Your Name"
-                   ng-required="true">
-            <input type="submit" value="Go">
+          <input
+            type="text"
+            name="yourName"
+            ng-model="yourName"
+            id="yourName"
+            placeholder="Your Name"
+            ng-required="true"
+          />
+          <input type="submit" value="Go" />
         </form>
+      </div>
     </div>
-</div>
 
-<nav class="navbar navbar-fixed-top">
-    <div class="container-fluid">
-        <div id="mobileNav" class="pull-left" ng-show="isMobile" ng-click="toggleMobileNav()">
-            <i class="fa fa-bars"></i>
+    <nav class="navbar navbar-fixed-top">
+      <div class="container-fluid">
+        <div
+          id="mobileNav"
+          class="pull-left"
+          ng-show="isMobile"
+          ng-click="toggleMobileNav()"
+        >
+          <i class="fa fa-bars"></i>
         </div>
-        <h1 class="pull-left" ng-show="!isMobile"><i class="fa fa-comment"></i> Chat</h1>
-        <h1 class="pull-right"><i class="fa fa-{{activeIcon}}"></i> {{currentUser}}</h1>
-    </div>
-</nav>
+        <h1 class="pull-left" ng-show="!isMobile">
+          <i class="fa fa-comment"></i> Chat
+        </h1>
+        <h1 class="pull-right">
+          <i class="fa fa-{{activeIcon}}"></i> {{currentUser}}
+        </h1>
+      </div>
+    </nav>
 
-<div id="sideBar" ng-class="{'show': toggleMobile}">
-    <button class="btn btn-default" ng-click="leaveChat()">Leave Chat</button>
-    <h2 ng-class="{'active': activeChatWindow == 'Main Lobby'}" ng-click="chatWindow('Main Lobby',false)">Main
-        Lobby</h2>
-    <div class="header">
+    <div id="sideBar" ng-class="{'show': toggleMobile}">
+      <button class="btn btn-default" ng-click="leaveChat()">Leave Chat</button>
+      <h2
+        ng-class="{'active': activeChatWindow == 'Main Lobby'}"
+        ng-click="chatWindow('Main Lobby',false)"
+      >
+        Main Lobby
+      </h2>
+      <div class="header">
         <h3>Active Users</h3>
+      </div>
+      <ul>
+        <li
+          ng-repeat="user in connectedUsers"
+          ng-class="{'active': user.name == activeChatWindow}"
+          ng-click="chatWindow(user.name,true)"
+          ng-if="user.name !== currentUser"
+        >
+          <i class="fa fa-{{user.icon}}"></i>
+          {{user.name}}
+          <span
+            animate-on-change="user.unRead"
+            ng-show="user.unRead > 0"
+            class="unRead"
+            >{{user.unRead}}</span
+          >
+        </li>
+      </ul>
     </div>
-    <ul>
-        <li ng-repeat="user in connectedUsers" ng-class="{'active': user.name == activeChatWindow}"
-            ng-click="chatWindow(user.name,true)" ng-if="user.name !== currentUser"><i class="fa fa-{{user.icon}}"></i>
-            {{user.name}}
-            <span animate-on-change="user.unRead" ng-show="user.unRead > 0" class="unRead">{{user.unRead}}</span></li>
-    </ul>
-</div>
 
-<div id="contain">
-    <div class="container-fluid">
+    <div id="contain">
+      <div class="container-fluid">
         <div class="">
-            <div id="topChat">
-                <h2><span ng-show="pm">Private Message: </span>{{activeChatWindow}}</h2>
-                <button class="btn btn-default" ng-click="startWhiteboard()" ng-show="pm">Start Whiteboard</button>
+          <div id="topChat">
+            <h2>
+              <span ng-show="pm">Private Message: </span>{{activeChatWindow}}
+            </h2>
+            <button
+              class="btn btn-default"
+              ng-click="startWhiteboard()"
+              ng-show="pm"
+            >
+              Start Whiteboard
+            </button>
+          </div>
+          <div class="loader" ng-show="imgUploading">
+            <img src="/img/grid.svg" />
+            <h2>Uploading</h2>
+          </div>
+          <div
+            class="chatWindow"
+            ng-model="imgPreview"
+            ngf-drop="uploadFile($file)"
+            scroll-glue
+          >
+            <div
+              ng-repeat="message in messages[activeChatWindow]"
+              ng-class="{'currentUserText': message.name == currentUser}"
+            >
+              {{message.name}} :
+              <span ng-if="message.img !== 'yes' && !message.link"
+                >{{message.text}}</span
+              ><span ng-if="message.img == 'yes' || message.link"
+                ><a href="{{message.text}}" target="_blank" class="small"
+                  >{{message.text}}</a
+                ></span
+              >
+              <div ng-if="message.img == 'yes'">
+                <img ng-src="{{message.text}}" />
+              </div>
             </div>
-            <div class="loader" ng-show="imgUploading">
-                <img src="/img/grid.svg">
-                <h2>Uploading</h2>
-            </div>
-            <div class="chatWindow" ng-model="imgPreview" ngf-drop="uploadFile($file)" scroll-glue>
-                <div ng-repeat="message in messages[activeChatWindow]"
-                     ng-class="{'currentUserText': message.name == currentUser}">{{message.name}} : <span ng-if="message.img !== 'yes' && !message.link">{{message.text}}</span><span ng-if="message.img == 'yes' || message.link"><a href="{{message.text}}" target="_blank" class="small">{{message.text}}</a></span>
-                    <div ng-if="message.img == 'yes'">
-                        <img ng-src="{{message.text}}"></div>
-                    </div>
-            </div>
+          </div>
         </div>
-    </div>
-    <div class="container-fluid">
+      </div>
+      <div class="container-fluid">
         <div id="chatSendMessage">
-            <div class="col-sm-8 col-xs-6">
-                <!--<div id="imgPreview">-->
-                    <!--<img ngf-src="imgPreview" class="img-responsive">-->
-                <!--</div>-->
-                <textarea rows="3" id="messageType" class="form-control" ng-model="messageToSend" ng-enter="sendMessage()"></textarea>
-            </div>
-            <div class="col-sm-4 col-xs-6">
-                <button class="btn btn-default" ng-class="{'disabled': messageToSend.length < 1}" ng-click="sendMessage()">
-                    Send</button>
-            </div>
-            <div id="messageType"></div>
+          <div class="col-sm-8 col-xs-6">
+            <!--<div id="imgPreview">-->
+            <!--<img ngf-src="imgPreview" class="img-responsive">-->
+            <!--</div>-->
+            <textarea
+              rows="3"
+              id="messageType"
+              class="form-control"
+              ng-model="messageToSend"
+              ng-enter="sendMessage()"
+            ></textarea>
+          </div>
+          <div class="col-sm-4 col-xs-6">
+            <button
+              class="btn btn-default"
+              ng-class="{'disabled': messageToSend.length < 1}"
+              ng-click="sendMessage()"
+            >
+              Send
+            </button>
+          </div>
+          <div id="messageType"></div>
         </div>
+      </div>
     </div>
-</div>
-</body>
+  </body>
 </html>
