@@ -2,24 +2,25 @@
   "name": "chat",
   "version": "0.0.1",
   "description": "simple chat application",
+  "scripts": {
+    "build": "gulp sass && gulp uglify"
+  },
   "dependencies": {
     "aws-sdk": "^2.2.39",
     "body-parser": "^1.15.0",
     "crypto": "0.0.3",
     "express": "^4.10.2",
-    "gulp-git": "^1.7.0",
     "gulp-uglifyjs": "^0.6.2",
     "install": "^0.7.3",
     "mongodb": "^2.1.7",
-    "npm": "^3.8.9",
+    "sass": "^1.50.1",
     "socket.io": "^1.4.5",
     "uglify-js": "^2.6.2",
     "uglifyjs": "^2.4.10"
   },
   "devDependencies": {
     "browser-sync": "^2.11.1",
-    "gulp": "^3.9.1",
-    "gulp-ruby-sass": "^2.0.6",
-    "gulp-sass": "^2.2.0"
+    "gulp": "^4.0.2",
+    "gulp-sass": "^5.1.0"
   }
 }

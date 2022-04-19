@@ -1,17 +1,11 @@
 var gulp = require("gulp");
-var git = require("gulp-git");
-var sass = require("gulp-sass");
+const sass = require("gulp-sass")(require("sass"));
 var browserSync = require("browser-sync");
 var reload = browserSync.reload;
 var uglify = require("gulp-uglifyjs");
 
 gulp.task("default", function () {
   // place code for your default task here //
-});
-
-gulp.task("commit", function () {
-  return gulp.src(".").pipe(git.add()).pipe(git.commit("gulp commit"));
-  //.pipe(git.push('origin', 'master'));
 });
 
 gulp.task("sass", function () {
@@ -47,7 +41,7 @@ var files = [
 ];
 
 gulp.task("uglify", function () {
-  gulp
+  return gulp
     .src(files)
     .pipe(
       uglify("app.js", {
