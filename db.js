@@ -1,6 +1,6 @@
 var MongoClient = require("mongodb").MongoClient;
 var assert = require("assert");
-var url = "mongodb://localhost:27017/chat";
+var url = `mongodb://${process.env.DB_HOST}:27017/chat`;
 
 var mongo = {
   /**

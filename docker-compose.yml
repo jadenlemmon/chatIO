@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  app:
+    build: ./
+    image: chatio
+    environment:
+      DB_HOST: mongo
+    ports:
+      - "3000:3000"
+  mongo:
+    image: mongo
+    restart: always
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: root
+    #   MONGO_INITDB_ROOT_PASSWORD: example
