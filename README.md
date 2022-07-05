@@ -1,4 +1,4 @@
-## Example Chat App
+## Example Chat App1
 
 Simple example chat application using SocketIO and Angular.
 
